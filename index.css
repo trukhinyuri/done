@@ -1,0 +1,199 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.page {
+    display: flex;
+    flex: 1;
+    flex-direction: column; /*main-axis direction*/
+    flex-wrap: nowrap; /*one element on cross axis or many*/
+    justify-content: flex-start; /*justify on main-axis*/ /*from top*/
+    align-items: stretch; /*justify on cross-axis*/ /*horizontal stretch*/
+    margin: 4mm;
+}
+
+.page_tasks {
+     margin: 2mm 0 0 0;
+     display: flex;
+     flex-grow: 1;
+     flex-direction: column;
+     /*flex-flow: row;*/
+     /*flex: 1 1 auto;*/
+     /*justify-content: center; /!* align items in Main Axis *!/*/
+     /*align-items: stretch; /!* align items in Cross Axis *!/*/
+     /*align-content: stretch; /!* Extra space in Cross Axis *!/*/
+     /*background: black;*/
+}
+
+.page_today {
+    margin: 2mm 0 0 0;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    /*flex-flow: row;*/
+    /*flex: 1 1 auto;*/
+    /*justify-content: center; /!* align items in Main Axis *!/*/
+    /*align-items: stretch; /!* align items in Cross Axis *!/*/
+    /*align-content: stretch; /!* Extra space in Cross Axis *!/*/
+    /*background: black;*/
+}
+
+.page_today_header {
+    display: flex;
+    align-self: stretch;
+    font-size: 6mm;
+}
+
+.page_today_content {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    font-size: 4mm;
+}
+
+.page_tasks_header {
+    display: flex;
+    align-self: stretch;
+    font-size: 6mm;
+}
+
+.page_tasks_content {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    font-size: 4mm;
+}
+
+.page_controls {
+    margin: 2mm 0 0 0;
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_controls_report {
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_report_header {
+    min-width: 50mm;
+}
+
+.page_report_taskNumber {
+    margin: 0 2mm 0 2mm;
+    width: 20mm;
+}
+
+.page_report_submit {
+    min-width: 30mm;
+}
+
+.page_controls_remove {
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_remove_header {
+    min-width: 50mm;
+}
+
+.page_remove_taskNumber {
+    margin: 0 2mm 0 2mm;
+    width: 20mm;
+}
+
+.page_remove_submit {
+    min-width: 30mm;
+}
+
+
+.page_newTask {
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    /*background: white;*/
+
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_newTask_name {
+    text-wrap: none;
+}
+
+.page_newTask_input {
+    margin: 0 2mm 0 2mm;
+    flex: auto;
+
+}
+
+.page_newTask_text {
+    margin: 0 1mm 0 1mm;
+}
+
+.page_newTask_numberBlock {
+    width: 11mm;
+}
+
+.page_newTask_text_red {
+    color: darkred;
+    font-weight: bold;
+}
+
+.page_newTask_send {
+
+}
+
+.page_tasks_content_taskPlanner {
+    color: lightgray;
+    pointer-events: none;
+}
+
+.footer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 2mm;
+    font-family: "Helvetica Neue";
+    font-weight: 400;
+    font-size: 3mm;
+    color: grey;
+}
+
+.usualButton {
+    background: #f5f5f5;
+    color: darkgrey;
+}
+
+.btn.noHover:hover {
+    /* here copy default .btn class styles */
+    color: darkgrey;
+    /* or something like that */
+}
+
+.newTaskLabel {
+    color: darkgrey;
+}
+
+.tasksLabel {
+    color: darkgrey;
+}
+
+.todayLabel {
+    color: darkgrey;
+}
