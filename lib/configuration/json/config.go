@@ -2,11 +2,11 @@ package json
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"fmt"
+	"io/ioutil"
 )
 
-const configFileName = "config.json";
+const configFileName = "config.json"
 
 type Config struct {
 	DBType string
@@ -14,24 +14,21 @@ type Config struct {
 }
 
 func ConstructDefaultConfig() []byte {
-	defaultConfig := Config {
+	defaultConfig := Config{
 		DBType: "json",
-		DBName: "tasks.json" }
+		DBName: "tasks.json"}
 
-	defaultConfigJson, _ := json.Marshal(defaultConfig);
-	return defaultConfigJson;
+	defaultConfigJson, _ := json.Marshal(defaultConfig)
+	return defaultConfigJson
 }
 
 func InitializeDefaultConfig() {
-	SaveConfig(ConstructDefaultConfig());
+	SaveConfig(ConstructDefaultConfig())
 }
 
-
 func SaveConfig(jsonContent []byte) {
-	err := ioutil.WriteFile(configFileName, jsonContent, 0660);
+	err := ioutil.WriteFile(configFileName, jsonContent, 0660)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
-
-

@@ -4,13 +4,17 @@ import (
 	"done/lib/database/mongodb"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
-	"time"
-	"fmt"
 	"strconv"
+	"time"
 )
-var VERSION = "2018.08.15"
+
+var (
+	BuildVersion string = ""
+	BuildTime    string = ""
+)
 
 var dbUpgradePtr *bool
 var servicePortPtr *int
@@ -18,7 +22,7 @@ var versionPtr *bool
 
 func init() {
 	dbUpgradePtr = flag.Bool("dbupgrade", false, "Upgrade database for new version compatibility")
-	servicePortPtr = flag.Int("port", 3000, "Service port")
+	servicePortPtr = flag.Int("port", 3001, "Service port")
 	versionPtr = flag.Bool("version", false, "Show app version")
 }
 
@@ -47,7 +51,8 @@ func launchDBUpgrade() {
 }
 
 func printServiceVersion() {
-	fmt.Println(VERSION)
+	fmt.Println(BuildVersion)
+	fmt.Println(BuildTime)
 }
 
 func startService() {
@@ -78,7 +83,7 @@ type Test struct {
 
 func testApi(w http.ResponseWriter, r *http.Request) {
 	testObj := Test{}
-	testObj.Message = VERSION;
+	testObj.Message = BuildVersion
 	testObj.CreateAt = time.Now().Local()
 
 	testObjJSON, err := json.Marshal(testObj)

@@ -1,0 +1,146 @@
+.task {
+    display: flex;
+    flex-flow: column;
+    align-items: stretch; /* align items in Cross Axis */
+    align-content: stretch; /* Extra space in Cross Axis */
+    margin: 1mm 0 0 0;
+    align-self: stretch;
+}
+
+.task_visible {
+    display: flex;
+    flex-flow: row;
+    align-items: stretch; /* align items in Cross Axis */
+    align-content: stretch; /* Extra space in Cross Axis */
+}
+
+.task_visible_number {
+    margin: 0 2mm 0 0;
+}
+
+.task_parameters {
+    margin: 0 2mm 0 0;
+    white-space: nowrap;
+}
+
+.task_visible_content {
+    margin: 0 0 0 1mm;
+}
+
+.taskStopButton {
+
+}
+
+.task_progress {
+
+}
+
+.task_controls {
+    visibility: visible;
+    height: auto;
+}
+
+.collapsed {
+    visibility: hidden;
+    height: 0;
+}
+
+
+
+.taskButton:hover {
+    text-decoration: none;
+}
+
+.page_newSubTask {
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center;
+}
+
+.page_newSubTask_name {
+    text-wrap: none;
+}
+
+.page_newSubTask_input {
+    margin: 0 2mm 0 2mm;
+    flex: auto;
+
+}
+
+@media (prefers-color-scheme: light) {
+    .task_visible_number {
+        color: grey;
+    }
+
+    .task_parameters {
+        color: grey;
+    }
+
+    .task_visible_timeDeadline {
+        color: darkred;
+    }
+
+    .task_visible_content_active {
+        color: green;
+    }
+
+    .taskButton {
+        color: grey;
+    }
+
+    .taskStartButton {
+        color: green;
+    }
+
+    .taskButton:hover {
+        color: darkgray;
+    }
+
+    .task_visible_content {
+
+    }
+}
+
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .task_visible_number {
+        color: grey;
+    }
+
+    .task_parameters {
+        color: grey;
+    }
+
+    .task_visible_timeDeadline {
+        color: #b9433f !important;
+    }
+
+    .task_visible_content_active {
+        color: #009800 !important;
+    }
+
+    .taskButton {
+        color: #636363;
+    }
+
+    .taskStartButton {
+        color: #009800 !important;
+    }
+
+    .taskButton:hover {
+        color: darkgray;
+    }
+
+    .task_visible_content {
+        color: #b9b9b9;
+    }
+
+    .form-styled {
+        background: #3d3d3d !important;
+        border: none;
+        color: #ffffff !important;
+    }
+}
+

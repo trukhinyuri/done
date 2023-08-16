@@ -7,11 +7,9 @@ import (
 )
 
 type Task struct {
-	UUID string
-	Body string
-	TaskCreated time.Time
+	UUID          string
+	Body          string
+	TaskCreated   time.Time
 	TaskCompleted time.Time
-	Child []Task
+	Child         []Task
 }
-
-

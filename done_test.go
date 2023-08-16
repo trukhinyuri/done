@@ -1,12 +1,11 @@
 package main
 
 import (
-	"testing"
-	"os"
 	"bytes"
 	"io"
+	"os"
+	"testing"
 )
-
 
 func TestMain(m *testing.M) {
 	os.Exit(m.Run())
@@ -15,7 +14,7 @@ func TestMain(m *testing.M) {
 func TestVersionParameterPassed(t *testing.T) {
 	expected := VERSION + "\n"
 
-	*versionPtr = true;
+	*versionPtr = true
 	args := []string{"--version"}
 
 	r, w, _ := os.Pipe()
@@ -40,8 +39,8 @@ func TestVersionParameterPassed(t *testing.T) {
 	}
 }
 
-func BenchmarkVersionParameterPassed (b *testing.B) {
-	*versionPtr = true;
+func BenchmarkVersionParameterPassed(b *testing.B) {
+	*versionPtr = true
 	args := []string{"--version"}
 
 	for i := 0; i < b.N; i++ {
