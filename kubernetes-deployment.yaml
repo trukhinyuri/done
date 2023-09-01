@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: done
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: done
+  template:
+    metadata:
+      labels:
+        app: done
+    spec:
+      containers:
+        - name: done
+          image: done:latest
+          imagePullPolicy: IfNotPresent

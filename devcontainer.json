@@ -1,5 +1,0 @@
-{
-  "image": "golang",
-
-  "forwardPorts": [3000]
-}
