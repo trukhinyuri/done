@@ -4,26 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2136c828-64c0-4f16-ae33-14916b77e5bc" name="Default" comment="Updated to actual state">
-      <change afterPath="$PROJECT_DIR$/.mirrord/mirrord.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2023-Oct-29.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.devcontainer/devcontainer.json" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/devcontainer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kubernetes-settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="2136c828-64c0-4f16-ae33-14916b77e5bc" name="Default" comment="Updated visual style">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/done" beforeDir="false" afterPath="$PROJECT_DIR$/done" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/bower_components/jquery/AUTHORS.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/bower_components/jquery/AUTHORS.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/bower_components/jquery/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/bower_components/jquery/LICENSE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/bower_components/jquery/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/bower_components/jquery/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/task/task.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/task/task.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/task/task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.sync-conflict-20200107-212912-UT3QF3Y.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kubernetes-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes-deployment.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -393,7 +375,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Restore removed code :)" />
     <MESSAGE value="Updated to actual state" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated to actual state" />
+    <MESSAGE value="Updated visual style" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated visual style" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
