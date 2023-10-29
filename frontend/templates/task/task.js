@@ -84,8 +84,8 @@
                     duration_seconds -= duration_hours * 60 * 60;
                     var duration_minutes = Math.floor(duration_seconds / 60);
                     duration_seconds -= duration_minutes * 60;
-                    task_visible_timeExcecutionReal.innerHTML = "[Затрачено: "
-                        + duration_days + " дн., "
+                    task_visible_timeExcecutionReal.innerHTML = "[Spend: "
+                        + duration_days + " d., "
                         + duration_hours + " : "
                         + duration_minutes + " : "
                         + duration_seconds + " ]";
@@ -135,7 +135,7 @@
             var taskUUID = currentTemplate.getAttribute('data-uuid');
             var taskBody = currentTemplate.getAttribute('data-body');
 
-            if (confirm('Вы действительно хотите УДАЛИТЬ задачу: ' + taskBody )) {
+            if (confirm('Do you really want to DELETE the task: ' + taskBody )) {
                 Done.removeTask(taskUUID);
             }
         }
@@ -144,7 +144,7 @@
             var taskUUID = currentTemplate.getAttribute('data-uuid');
             var taskBody = currentTemplate.getAttribute('data-body');
 
-            if (confirm('Вы действительно хотите отчитаться о выполнении задачи: ' + taskBody )) {
+            if (confirm('Do you really want to report on the completion of the task:§ ' + taskBody )) {
                 Done.completeTask(taskUUID);
             }
         }

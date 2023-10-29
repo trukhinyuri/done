@@ -45,8 +45,6 @@
     height: 0;
 }
 
-
-
 .taskButton:hover {
     text-decoration: none;
 }
@@ -81,10 +79,6 @@
         color: darkred;
     }
 
-    .task_visible_content_active {
-        color: green;
-    }
-
     .taskButton {
         color: grey;
     }
@@ -98,7 +92,41 @@
     }
 
     .task_visible_content {
+        color: #333333; /* Темно-серый цвет для хорошей читаемости на светлом фоне */
+        font-family: 'Roboto', sans-serif; /* Современный шрифт, который выглядит хорошо и читается легко */
+        font-weight: 400; /* Средний вес шрифта, хорошо подходит для основного контента */
+        line-height: 1.5; /* Увеличенный интервал между строками для лучшей читаемости */
+    }
 
+    .task_visible_content_active {
+        color: #008000; /* Темно-зеленый цвет для активного текста */
+        font-weight: 500; /* Немного более жирный вес шрифта для выделения активного текста */
+    }
+
+
+    .usualButton {
+        background: #e3e3e3;  /* Light green background */
+        color: #252525 !important;
+        border: none;
+        padding: 12px 24px;  /* Reduced padding for a smaller button */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;  /* Slightly reduced font size */
+        margin: 6px 3px;
+        cursor: pointer;
+        border-radius: 8px;  /* Less rounded corners */
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);  /* More subtle shadow */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
+    }
+
+    .usualButton:hover {
+        color: #252525;
+        background: #cbcbcb;  /* Slightly darker green on hover */
+        transform: scale(1.03);  /* Reduced scaling for subtler effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);  /* Slightly less pronounced shadow on hover */
     }
 }
 
@@ -117,9 +145,19 @@
         color: #b9433f !important;
     }
 
-    .task_visible_content_active {
-        color: #009800 !important;
+    .task_visible_content {
+        color: #e0e0e0; /* Светлый серый для лучшей читаемости на темном фоне */
+        font-family: 'Roboto', sans-serif; /* Современный шрифт, который выглядит хорошо и читается легко */
+        font-weight: 400; /* Средний вес шрифта, хорошо подходит для основного контента */
+        line-height: 1.5; /* Увеличенный интервал между строками для лучшей читаемости */
     }
+
+    .task_visible_content_active {
+        color: #00c800; /* Ярко-зеленый цвет для активного текста */
+        font-weight: 500; /* Немного более жирный вес шрифта для выделения активного текста */
+    }
+
+
 
     .taskButton {
         color: #636363;
@@ -133,14 +171,35 @@
         color: darkgray;
     }
 
-    .task_visible_content {
-        color: #b9b9b9;
+    .usualButton {
+        background: #363636;  /* Darker green for dark theme */
+        color: #EFEFEF !important;  /* Light color text for contrast */
+        border: none;
+        padding: 12px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 6px 3px;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 3px 6px rgba(255, 255, 255, 0.05);  /* Light shadow for contrast on dark background */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
     }
 
-    .form-styled {
-        background: #3d3d3d !important;
-        border: none;
-        color: #ffffff !important;
+    .usualButton:hover {
+        background: #333333;  /* A slightly darker green on hover for the dark theme */
+        transform: scale(1.03);
+        color: #EFEFEF;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);  /* Slightly more pronounced light shadow on hover */
     }
+
+    /*.form-styled {*/
+    /*    background: #3d3d3d !important;*/
+    /*    border: none;*/
+    /*    color: #ffffff !important;*/
+    /*}*/
 }
 

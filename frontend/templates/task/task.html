@@ -9,17 +9,17 @@
 >
     <div class="task_visible" draggable="true">
         <div class="task_parameters task_visible_timeDeadline">[ $time_hard_dead_line_readable; ]</div>
-        <div class="task_parameters task_visible_timeExcecutionEstimated">[ Нужно: $duration_execution_estimated_seconds_readable; ]</div>
-        <div class="task_parameters task_visible_timeExcecutionReal">[ Затрачено: $duration_execution_real_seconds_readable; ]</div>
+        <div class="task_parameters task_visible_timeExcecutionEstimated">[ Needed: $duration_execution_estimated_seconds_readable; ]</div>
+        <div class="task_parameters task_visible_timeExcecutionReal">[ Spend: $duration_execution_real_seconds_readable; ]</div>
         <div class="task_visible_content">$body;</div>
     </div>
     <div class="task_controls collapsed">
         <!--<button type="submit" class="btn btn-link taskButton taskEditButton">Редактировать</button>-->
-        <button type="submit" class="btn btn-link taskButton taskStartButton">Начать</button>
-        <button type="submit" class="btn btn-link taskButton taskStopButton">Остановить</button>
-        <button type="submit" class="btn btn-link taskButton taskChangeButton">Изменить</button>
-        <button type="submit" class="btn btn-link taskButton taskCompletedButton">Отчитаться</button>
-        <button type="submit" class="btn btn-link taskButton taskRemoveButton">Удалить</button>
+        <button type="submit" class="btn btn-link usualButton taskStartButton">Start</button>
+        <button type="submit" class="btn btn-link usualButton taskStopButton">Stop</button>
+        <button type="submit" class="btn btn-link usualButton taskChangeButton">Change</button>
+        <button type="submit" class="btn btn-link usualButton taskCompletedButton">Report</button>
+        <button type="submit" class="btn btn-link usualButton taskRemoveButton">Delete</button>
         <!--<div class="page_newSubTask">-->
             <!--<div class="page_newSubTask_send">-->
                 <!--<button type="submit" class="taskButton btn noBorder noHover usualButton">Сделать</button>-->

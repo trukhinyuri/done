@@ -146,15 +146,15 @@ btn-link {
     align-content: center; /* Extra space in Cross Axis */
 }
 
+.page_newTask_input {
+    flex: auto;
+    margin: 0 2mm 0 2mm;
+}
+
 .page_newTask_name {
     text-wrap: none;
 }
 
-.page_newTask_input {
-    margin: 0 2mm 0 2mm;
-    flex: auto;
-
-}
 
 .page_newTask_text {
     margin: 0 1mm 0 1mm;
@@ -195,15 +195,72 @@ btn-link {
     }
 
     .usualButton {
-        background: #f5f5f5;
-        color: darkgrey;
+        background: #e3e3e3;  /* Light green background */
+        color: #252525 !important;
+        border: none;
+        padding: 12px 24px;  /* Reduced padding for a smaller button */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;  /* Slightly reduced font size */
+        margin: 6px 3px;
+        cursor: pointer;
+        border-radius: 8px;  /* Less rounded corners */
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);  /* More subtle shadow */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
     }
 
-    .btn.noHover:hover {
-        /* here copy default .btn class styles */
-        color: darkgrey;
-        /* or something like that */
+    .usualButton:hover {
+        color: #252525;
+        background: #cbcbcb;  /* Slightly darker green on hover */
+        transform: scale(1.03);  /* Reduced scaling for subtler effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);  /* Slightly less pronounced shadow on hover */
     }
+
+
+
+
+    .page_input_text {
+        flex: auto;
+        color: #3b3b3b;
+        font-size: 20px;
+        font-weight: 500;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8f8; /* Slightly off-white for better visibility */
+        background-image: linear-gradient(to bottom, #f8f8f8, #e9e9e9); /* Subtle gradient */
+        border: 1px solid #e0e0e0; /* Subtle border */
+        padding: 4px !important;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Increased shadow contrast */
+    }
+
+    .page_input_text:hover {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.22); /* More visible shadow on hover */
+    }
+
+    .page_input_text:focus {
+        outline: none;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.22); /* More visible shadow on focus */
+    }
+
+    .page_input_text:disabled {
+        background-color: #ddd;
+        color: #999;
+        box-shadow: none;
+    }
+
+    .page_input_text::placeholder {
+        color: #bbb;
+    }
+
+
+
+
+
+
+
 
     .newTaskLabel {
         color: darkgrey;
@@ -233,19 +290,78 @@ btn-link {
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
     html, body, .page {
-        background: #292929 !important;
+        background: black !important;
     }
+
 
     .usualButton {
-        background: #3c3c3c !important;
-        color: #bbbbbb !important;
+        background: #363636;  /* Darker green for dark theme */
+        color: #EFEFEF !important;  /* Light color text for contrast */
+        border: none;
+        padding: 12px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 6px 3px;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 3px 6px rgba(255, 255, 255, 0.05);  /* Light shadow for contrast on dark background */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
     }
 
-    .btn.noHover:hover {
-        /* here copy default .btn class styles */
-        color: darkgrey;
-        /* or something like that */
+    .usualButton:hover {
+        background: #333333;  /* A slightly darker green on hover for the dark theme */
+        transform: scale(1.03);
+        color: #EFEFEF;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);  /* Slightly more pronounced light shadow on hover */
     }
+
+
+    .page_input_text {
+        appearance: none;
+        flex: auto !important;
+        color: #EFEFEF !important;
+        font-size: 20px;
+        background-color: #1A1A1A !important;
+        border: none !important;
+        padding: 4px !important;
+        border-radius: 8px !important; /* Изменено значение на 8px для идентичности со светлой темой */
+        box-shadow: 0 -2px 4px rgba(255, 255, 255, 0.12), 0 -2px 4px rgba(255, 255, 255, 0.18) !important;
+        transition: background-color 0.5s ease, box-shadow 0.5s ease !important;
+    }
+
+    .page_input_text:hover {
+        box-shadow: 0 -3px 6px rgba(255, 255, 255, 0.14), 0 -3px 6px rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .page_input_text:focus {
+        background-color: #2E2E2E !important;
+        outline: none !important;
+        box-shadow: 0 -3px 6px rgba(255, 255, 255, 0.14), 0 -3px 6px rgba(255, 255, 255, 0.2), 0 0 0 2px rgba(196, 196, 196, 0.4) !important;
+    }
+
+    .page_input_text:disabled {
+        background-color: #121212 !important;
+        color: #6B6B6B !important;
+        box-shadow: none !important;
+    }
+
+    .page_input_text::placeholder {
+        color: #6B6B6B !important;
+    }
+
+
+
+
+
+    /*.btn.noHover:hover {*/
+    /*    !* here copy default .btn class styles *!*/
+    /*    color: darkgrey;*/
+    /*    !* or something like that *!*/
+    /*}*/
 
     .newTaskLabel {
         color: darkgrey;

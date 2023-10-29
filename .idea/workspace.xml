@@ -5,19 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2136c828-64c0-4f16-ae33-14916b77e5bc" name="Default" comment="Updated to actual state">
-      <change afterPath="$PROJECT_DIR$/.devcontainer/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/kubernetes-deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mirrord/mirrord.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2023-Oct-29.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.devcontainer/devcontainer.json" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/devcontainer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/be354540-ce19-4968-ae28-0f98ff7611e8.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/trukhinyuri.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/trukhinyuri.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/done.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/done.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kubernetes-settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devcontainer.json" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/devcontainer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/done" beforeDir="false" afterPath="$PROJECT_DIR$/done" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/bower_components/jquery/AUTHORS.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/bower_components/jquery/AUTHORS.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/bower_components/jquery/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/bower_components/jquery/LICENSE.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/bower_components/jquery/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/bower_components/jquery/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/task/task.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/task/task.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/task/task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/task/task.sync-conflict-20200107-212912-UT3QF3Y.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes-deployment.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +33,7 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="GOROOT" url="file:///opt/homebrew/opt/go/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -40,7 +46,7 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="36874387-e32a-4089-9386-dcbe86680457" />
+        <option name="accountId" value="4633f458-4b8a-4cbe-ad8d-66063fbd5365" />
         <option name="url" value="https://github.com/trukhinyuri/done.git" />
       </UrlAndAccount>
     </option>
@@ -56,19 +62,26 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/vendor/modules.txt" root0="SKIP_INSPECTION" />
   </component>
-  <component name="JsFlowSettings">
-    <service-enabled>true</service-enabled>
-    <exe-path />
-    <other-services-enabled>true</other-services-enabled>
-    <auto-save>true</auto-save>
-  </component>
   <component name="KubernetesApiPersistence">
     <option name="namespacesByContext">
       <map>
         <entry key="docker-desktop" value="default" />
       </map>
     </option>
-    <option name="namespace" value="default" />
+  </component>
+  <component name="KubernetesApiProvider">{
+  &quot;contexts&quot;: [
+    {
+      &quot;name&quot;: &quot;docker-desktop&quot;
+    }
+  ],
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="KubernetesSettings">
+    <option name="configuredContextNames">
+      <option value="minikube" />
+    </option>
+    <option name="contextName" value="minikube" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="9t981xxy" />
@@ -92,6 +105,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Docker..devcontainer/Dockerfile.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
@@ -99,20 +113,21 @@
     &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;V_FMT&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20230901_0003&quot;,
+    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20230902_0001&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/root&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/trukhinyuri/SynologyDrive/JetBrainsSources/done&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.web.browsers&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -124,7 +139,7 @@
       <window_info id="Commit_Guest" />
       <window_info id="Pull Requests" />
       <window_info id="Learn" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19548611" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10019532" />
       <window_info id="Commit" order="1" weight="0.25" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -135,7 +150,7 @@
       <window_info anchor="bottom" id="Run" weight="0.3136419" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems View" order="1" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="2" visible="true" weight="0.30530974" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="2" visible="true" weight="0.1671378" />
       <window_info anchor="bottom" id="Services" order="3" weight="0.3051157" />
       <window_info anchor="right" id="Endpoints" />
       <window_info anchor="right" id="make" side_tool="true" />
@@ -150,15 +165,7 @@
       <recent name="$PROJECT_DIR$/.devcontainer" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Docker..devcontainer/Dockerfile">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -189,19 +196,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+      <method />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="go build done/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="done" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/" />
-      <method v="2" />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
@@ -228,6 +235,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="go build done/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="done" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
       <deployment type="dockerfile">
         <settings>
@@ -248,6 +263,15 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name=".devcontainer/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="buildOnly" value="true" />
+          <option name="sourceFilePath" value=".devcontainer/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
         <settings />
@@ -256,9 +280,17 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker..devcontainer/Dockerfile" />
         <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-e6de5fef99a4-91e4cb603404-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.10527.20" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SwiftWorkspaceSettings">
@@ -290,7 +322,42 @@
       <workItem from="1693558071021" duration="188000" />
       <workItem from="1693558280163" duration="12731000" />
       <workItem from="1693584637583" duration="1796000" />
+      <workItem from="1693598774376" duration="768000" />
+      <workItem from="1693669257587" duration="66000" />
+      <workItem from="1693669332973" duration="1879000" />
+      <workItem from="1694160753848" duration="47000" />
+      <workItem from="1694160982005" duration="1362000" />
+      <workItem from="1694178377674" duration="3803000" />
+      <workItem from="1694436913191" duration="33000" />
+      <workItem from="1694436963301" duration="518000" />
+      <workItem from="1694437492155" duration="45000" />
+      <workItem from="1694437662125" duration="23000" />
+      <workItem from="1694439756436" duration="3038000" />
+      <workItem from="1694454328717" duration="3686000" />
+      <workItem from="1694679906300" duration="17000" />
+      <workItem from="1694679929903" duration="3018000" />
+      <workItem from="1695736492499" duration="1730000" />
+      <workItem from="1695738243069" duration="3672000" />
+      <workItem from="1695821752924" duration="1193000" />
+      <workItem from="1695891433370" duration="122000" />
+      <workItem from="1695891602170" duration="1211000" />
+      <workItem from="1695950613115" duration="474000" />
+      <workItem from="1695956331522" duration="57000" />
+      <workItem from="1695956416125" duration="178000" />
+      <workItem from="1695956614879" duration="594000" />
+      <workItem from="1695964821751" duration="65000" />
+      <workItem from="1695964899639" duration="248000" />
+      <workItem from="1695965356357" duration="30000" />
     </task>
+    <task id="LOCAL-00001" summary="Updated to actual state">
+      <option name="closed" value="true" />
+      <created>1693598825825</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1693598825825</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -298,12 +365,6 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-    <option name="exactExcludedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/../modules.js/old/playground/structures.js" />
-        <option value="$PROJECT_DIR$/../modules.js/playground/structures.js" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

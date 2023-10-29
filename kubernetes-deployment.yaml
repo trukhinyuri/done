@@ -14,5 +14,5 @@ spec:
     spec:
       containers:
         - name: done
-          image: done:latest
+          image: trukhinyuri/done:latest
           imagePullPolicy: IfNotPresent

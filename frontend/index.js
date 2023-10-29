@@ -31,7 +31,7 @@ window.exports.timerId = 0;
                             seconds -= hours * 60 * 60;
                             var minutes = Math.floor(seconds / 60);
 
-                            var result = days + " дн., "
+                            var result = days + " d., "
                             + hours + " : "
                             + minutes;
                             objArray[i][property + "_readable"] = result;
@@ -65,7 +65,7 @@ window.exports.timerId = 0;
                             var minutes = Math.floor(seconds / 60);
                             seconds -= minutes * 60;
 
-                            var result = days + " дн., "
+                            var result = days + " d., "
                                 + hours + " : "
                                 + minutes + " : " + seconds;
                             objArray[i][property + "_readable"] = result;
@@ -155,7 +155,7 @@ window.exports.timerId = 0;
                 if ((unPlannedSeconds > workDaySeconds) && (i != 0)) {
                         var plannerContainer = document.createElement("div");
                         plannerContainer.className = "page_tasks_content_taskPlanner";
-                        plannerContainer.innerHTML += "↑ будет сделано до "
+                        plannerContainer.innerHTML += "↑ will be done by "
                             + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
                             + "-" + plannedDate.getDate() + " ( " + getCorrectDayOfWeek(plannedDate.getDay()) + " )";
                         tasksElements.appendChild(plannerContainer);
@@ -182,7 +182,7 @@ window.exports.timerId = 0;
                     if (unPlannedSeconds <= workDaySeconds) {
                         var plannerContainer = document.createElement("div");
                         plannerContainer.className = "page_tasks_content_taskPlanner";
-                        plannerContainer.innerHTML += "↑ будет сделано до "
+                        plannerContainer.innerHTML += "↑ will be done by "
                             + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
                             + "-" + plannedDate.getDate() + " ( " + getCorrectDayOfWeek(plannedDate.getDay()) + " )";
                         tasksElements.appendChild(plannerContainer);
@@ -196,7 +196,7 @@ window.exports.timerId = 0;
 
                         var plannerContainer = document.createElement("div");
                         plannerContainer.className = "page_tasks_content_taskPlanner";
-                        plannerContainer.innerHTML += "↑ будет сделано до "
+                        plannerContainer.innerHTML += "↑ will be done by "
                             + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
                             + "-" + plannedDate.getDate() + " ( " + getCorrectDayOfWeek(plannedDate.getDay()) + " )";
                         tasksElements.appendChild(plannerContainer);
@@ -219,25 +219,25 @@ window.exports.timerId = 0;
     function getCorrectDayOfWeek(jsDay) {
         switch(parseInt(jsDay)) {
             case 0:
-            return "воскресенье";
+            return "sunday";
                 break;
             case 1:
-                return "понедельник";
+                return "monday";
                 break;
             case 2:
-                return "вторник";
+                return "tuesday";
                 break;
             case 3:
-                return "среда";
+                return "wednesday";
                 break;
             case 4:
-                return "четверг";
+                return "thursday";
                 break;
             case 5:
-                return "пятница";
+                return "friday";
                 break;
             case 6:
-                return "суббота";
+                return "saturday";
                 break;
         }
         
@@ -278,7 +278,7 @@ window.exports.timerId = 0;
             for (var i = 0; i < tasksCompletedData.length; i++) {
                 today.innerHTML +=
                     tasksCompletedData[i].body
-                    + " ( Затрачено: "
+                    + " ( Spended: "
                     + tasksCompletedData[i]["duration_execution_real_seconds_readable"]
                     + " ) "
                     + "<br>";
@@ -365,7 +365,7 @@ window.exports.timerId = 0;
                 }
             }
         } else {
-            alert("Некорректный ввод в форму постановки задачи")
+            alert("Incorrect input in the task setting form")
         }
     }
 
