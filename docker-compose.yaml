@@ -1,22 +1,23 @@
+version: '3.8'
+
 services:
   app:
-    build: ../timeserver
-    command: python3 server.py
-    environment:
-      PYTHONDONTWRITEBYTECODE: 1
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8080:80"
-
-  db:
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
+      - "8080:8080"
+    depends_on:
+      - mongodb
     environment:
-      MYSQL_ROOT_PASSWORD: super secret password
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: dev_user
-      MYSQL_PASSWORD: another secret password
+      - MONGO_URL=mongodb://mongodb:27017/mydb
+
+  mongodb:
+    image: mongo:4.2
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
 
 volumes:
-  db_data:
+  mongodb_data:
