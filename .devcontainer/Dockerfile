@@ -3,7 +3,7 @@ FROM ubuntu:latest
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y curl wget unzip zip make
+    apt-get install -y curl wget unzip zip make git
 
 RUN curl -s "https://get.sdkman.io" | bash
 
