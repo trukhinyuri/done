@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f38c341a-6262-411f-bffd-9c9ecfd12dad" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.terraform.lock.hcl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov- 5.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov- 6.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov- 7.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov- 9.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-10.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-12.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-19.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-20.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-21.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-22.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archives/2023-Nov-23.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dep.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/minikube-darwin-arm64" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform/.terraform.lock.hcl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform/.terraform/providers/registry.terraform.io/hashicorp/kubernetes/2.23.0/darwin_arm64/terraform-provider-kubernetes_v2.23.0_x5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform/infra.tf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform/main.tfvars" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform/terraform.tfstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.devcontainer/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.devcontainer/devcontainer.json" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/devcontainer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.ids" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/be354540-ce19-4968-ae28-0f98ff7611e8/storage.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/be354540-ce19-4968-ae28-0f98ff7611e8/storage_v2/_src_/schema/.UokAAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/trukhinyuri.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/done.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/done.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.sync-conflict-20200107-231621-UT3QF3Y.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.sync-conflict-20200107-215431-UT3QF3Y.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.sync-conflict-20200106-164756-UT3QF3Y.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.sync-conflict-20200107-204324-UT3QF3Y.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.sync-conflict-20200427-090552-UT3QF3Y.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mirrord/mirrord.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/done" beforeDir="false" afterPath="$PROJECT_DIR$/done" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/mongodb/mongodb.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/mongodb/mongodb.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file:///opt/homebrew/opt/go/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "contexts": [
+    {
+      "name": "docker-desktop"
+    },
+    {
+      "name": "minikube",
+      "originalNamespace": "default"
+    }
+  ],
+  "isMigrated": true
+}]]></component>
+  <component name="KubernetesSettings">
+    <option name="contextName" value="minikube" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2YaQt7O0EUlaNZfaaHuzKXNpY1S" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.Enable generate summary features in internal mode&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/trukhinyuri/SynologyDrive/JetBrainsSources/done&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.kubernetes.config.KubernetesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mongo&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/archives" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
+      <option name="appName" />
+      <option name="appServicePlanName" />
+      <option name="appServicePlanResourceGroup" />
+      <option name="appSettingsKey" value="169680ab-6885-45ad-9fab-b7260ff403c5" />
+      <option name="artifact" />
+      <option name="debugOptions" />
+      <option name="deployment" />
+      <option name="deploymentStagingDirectoryPath" />
+      <option name="funcPath" />
+      <option name="functionHostArguments" />
+      <option name="hostJsonPath" />
+      <option name="insightsName" />
+      <option name="instrumentationKey" />
+      <option name="javaVersion" />
+      <option name="localSettingsJsonPath" />
+      <option name="moduleName" />
+      <option name="os" />
+      <option name="pricingTier" />
+      <option name="providerMap">
+        <map />
+      </option>
+      <option name="region" />
+      <option name="resourceGroup" />
+      <option name="stagingFolder" />
+      <option name="subscription" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-2d845a470734-JavaScript-IU-241.SNAPSHOT" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f38c341a-6262-411f-bffd-9c9ecfd12dad" name="Changes" comment="" />
+      <created>1700761421386</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700761421386</updated>
+      <workItem from="1700761423583" duration="229000" />
+      <workItem from="1701250285557" duration="140000" />
+      <workItem from="1701250620607" duration="1855000" />
+      <workItem from="1701348579656" duration="70000" />
+      <workItem from="1701440478246" duration="619000" />
+      <workItem from="1701453725053" duration="80137000" />
+      <workItem from="1701682752374" duration="473000" />
+      <workItem from="1701683238309" duration="55000" />
+      <workItem from="1701683311700" duration="24000" />
+      <workItem from="1701683350089" duration="78000" />
+      <workItem from="1701683445828" duration="29000" />
+      <workItem from="1701683490563" duration="4246000" />
+      <workItem from="1701721062625" duration="598000" />
+      <workItem from="1701781876055" duration="6143000" />
+      <workItem from="1701880077519" duration="967000" />
+      <workItem from="1701949333059" duration="597000" />
+      <workItem from="1702030204227" duration="473000" />
+      <workItem from="1702030693501" duration="565000" />
+      <workItem from="1702031317873" duration="687000" />
+      <workItem from="1702033914648" duration="856000" />
+      <workItem from="1702071267560" duration="18000" />
+      <workItem from="1702071438649" duration="591000" />
+      <workItem from="1702292666809" duration="290000" />
+      <workItem from="1702292968345" duration="41000" />
+      <workItem from="1702293039180" duration="58000" />
+      <workItem from="1702293225348" duration="68000" />
+      <workItem from="1702308339568" duration="776000" />
+      <workItem from="1702312018974" duration="41000" />
+      <workItem from="1702312309925" duration="172000" />
+      <workItem from="1702312496892" duration="1396000" />
+      <workItem from="1702314232900" duration="21000" />
+      <workItem from="1702314256269" duration="191000" />
+      <workItem from="1702314449583" duration="8000" />
+      <workItem from="1702314459447" duration="19000" />
+      <workItem from="1702314480455" duration="107000" />
+      <workItem from="1702314600056" duration="69000" />
+      <workItem from="1702314670737" duration="131000" />
+      <workItem from="1702314824690" duration="12000" />
+      <workItem from="1702314840333" duration="112000" />
+      <workItem from="1702314954189" duration="53000" />
+      <workItem from="1702380429353" duration="12000" />
+      <workItem from="1702380446937" duration="612000" />
+      <workItem from="1702393336512" duration="276000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

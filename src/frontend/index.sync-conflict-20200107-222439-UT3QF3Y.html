@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Done></title>
+        <link rel="icon" href="favicon.ico" />
+        <link rel="stylesheet" href="index.css"/>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>
+        <script src="bower_components/modules.js/modules.js"></script>
+        <script src="index.js"></script>
+	</head>
+	<body>
+        <div class="page">
+            <div class="page_newTask">
+                <div class="page_newTask_send">
+                    <button type="submit" class="taskButton btn noBorder noHover usualButton">Сделать</button>
+                </div>
+                <div class="page_newTask_input">
+                    <input type="text" class="taskText form-control"/>
+                </div>
+                <div class="page_newTask_text">
+                    за
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_estimationMinutes">
+                    <input type="text" placeholder="0" class="page_newTask_estimationMinutes_value form-control"/>
+                </div>
+                <div class="page_newTask_text">
+                    минут,
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_estimationHours">
+                    <input type="text" placeholder="0" class="page_newTask_estimationHours_value form-control"/>
+                </div>
+                <div class="page_newTask_text">
+                    часов,
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_estimationDays">
+                    <input type="text" placeholder="0" class="page_newTask_estimationDays_value form-control"/>
+                </div>
+                <div class="page_newTask_text">
+                    дней.
+                </div>
+                <div class="page_newTask_text_red page_newTask_text">
+                    Дедлайн:
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineDay">
+                    <input type="text" placeholder="0" class="page_newTask_timeHardDeadlineDay_value form-control"/>
+                </div>
+                <div class="page_newTask_text">
+                    числа /
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineMonth">
+                    <input type="text" placeholder="0" class="page_newTask_timeHardDeadlineMonth_value form-control"/>
+                </div>
+                <div class="page_newTask_text">
+                    месяца.
+                </div>
+
+            </div>
+            <div class="page_today">
+                <div class="page_today_header">
+                    <label class="todayLabel">Сделано сегодня:</label>
+                </div>
+                <div class="page_today_content">
+                </div>
+            </div>
+            <div class="page_tasks">
+                <div class="page_tasks_header">
+                    <label class="tasksLabel">Задачи:</label>
+                </div>
+                <div class="page_tasks_content">
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer_content">
+                Done. The task manager. © Yuri Trukhin, 2016–2018. Build 2018.08.15. Database: MongoDB 4.
+            </div>
+        </div>
+	</body>
+</html>

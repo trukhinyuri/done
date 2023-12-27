@@ -1,0 +1,397 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+input {
+    box-sizing: border-box;
+    display: block;
+    padding: 5px 10px;
+    font-size: 13px;
+    line-height: 20px;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #dbdee5;
+}
+
+btn-link {
+    background: none;
+}
+
+.page {
+    display: flex;
+    flex: 1;
+    flex-direction: column; /*main-axis direction*/
+    flex-wrap: nowrap; /*one element on cross axis or many*/
+    justify-content: flex-start; /*justify on main-axis*/ /*from top*/
+    align-items: stretch; /*justify on cross-axis*/ /*horizontal stretch*/
+    margin: 4mm;
+}
+
+.page_tasks {
+    margin: 2mm 0 0 0;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    /*flex-flow: row;*/
+    /*flex: 1 1 auto;*/
+    /*justify-content: center; /!* align items in Main Axis *!/*/
+    /*align-items: stretch; /!* align items in Cross Axis *!/*/
+    /*align-content: stretch; /!* Extra space in Cross Axis *!/*/
+    /*background: black;*/
+}
+
+.page_today {
+    margin: 2mm 0 0 0;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    /*flex-flow: row;*/
+    /*flex: 1 1 auto;*/
+    /*justify-content: center; /!* align items in Main Axis *!/*/
+    /*align-items: stretch; /!* align items in Cross Axis *!/*/
+    /*align-content: stretch; /!* Extra space in Cross Axis *!/*/
+    /*background: black;*/
+}
+
+.page_today_header {
+    display: flex;
+    align-self: stretch;
+    font-size: 6mm;
+}
+
+.page_today_content {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    font-size: 4mm;
+}
+
+.page_tasks_header {
+    display: flex;
+    align-self: stretch;
+    font-size: 6mm;
+}
+
+.page_tasks_content {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    font-size: 4mm;
+}
+
+.page_controls {
+    margin: 2mm 0 0 0;
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_controls_report {
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_report_header {
+    min-width: 50mm;
+}
+
+.page_report_taskNumber {
+    margin: 0 2mm 0 2mm;
+    width: 20mm;
+}
+
+.page_report_submit {
+    min-width: 30mm;
+}
+
+.page_controls_remove {
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_remove_header {
+    min-width: 50mm;
+}
+
+.page_remove_taskNumber {
+    margin: 0 2mm 0 2mm;
+    width: 20mm;
+}
+
+.page_remove_submit {
+    min-width: 30mm;
+}
+
+
+.page_newTask {
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    /*background: white;*/
+
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+.page_newTask_input {
+    flex: auto;
+    margin: 0 2mm 0 2mm;
+}
+
+.page_newTask_name {
+    text-wrap: none;
+}
+
+
+.page_newTask_text {
+    margin: 0 1mm 0 1mm;
+}
+
+.page_newTask_numberBlock {
+    width: 11mm;
+}
+
+.page_newTask_text_red {
+    font-weight: bold;
+}
+
+.page_newTask_send {
+
+}
+
+.page_tasks_content_taskPlanner {
+    pointer-events: none;
+}
+
+.footer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 2mm;
+    font-family: "Helvetica Neue";
+    font-weight: 400;
+    font-size: 3mm;
+}
+
+@media (prefers-color-scheme: light) {
+    html, body, .page {
+        background: white !important;
+    }
+
+    .usualButton {
+        background: #e3e3e3;  /* Light green background */
+        color: #252525 !important;
+        border: none;
+        padding: 12px 24px;  /* Reduced padding for a smaller button */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;  /* Slightly reduced font size */
+        margin: 6px 3px;
+        cursor: pointer;
+        border-radius: 8px;  /* Less rounded corners */
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);  /* More subtle shadow */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
+    }
+
+    .usualButton:hover {
+        color: #252525;
+        background: #cbcbcb;  /* Slightly darker green on hover */
+        transform: scale(1.03);  /* Reduced scaling for subtler effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);  /* Slightly less pronounced shadow on hover */
+    }
+
+
+
+
+    .page_input_text {
+        flex: auto;
+        color: #3b3b3b;
+        font-size: 20px;
+        font-weight: 500;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8f8; /* Slightly off-white for better visibility */
+        background-image: linear-gradient(to bottom, #f8f8f8, #e9e9e9); /* Subtle gradient */
+        border: 1px solid #e0e0e0; /* Subtle border */
+        padding: 4px !important;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Increased shadow contrast */
+    }
+
+    .page_input_text:hover {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.22); /* More visible shadow on hover */
+    }
+
+    .page_input_text:focus {
+        outline: none;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.22); /* More visible shadow on focus */
+    }
+
+    .page_input_text:disabled {
+        background-color: #ddd;
+        color: #999;
+        box-shadow: none;
+    }
+
+    .page_input_text::placeholder {
+        color: #bbb;
+    }
+
+
+
+
+
+
+
+
+    .newTaskLabel {
+        color: darkgrey;
+    }
+
+    .tasksLabel {
+        color: darkgrey;
+    }
+
+    .todayLabel {
+        color: darkgrey;
+    }
+
+    .footer {
+        color: grey;
+    }
+
+    .page_newTask_text_red {
+        color: darkred;
+    }
+
+    .page_tasks_content_taskPlanner {
+        color: lightgray;
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    html, body, .page {
+        background: black !important;
+    }
+
+
+    .usualButton {
+        background: #363636;  /* Darker green for dark theme */
+        color: #EFEFEF !important;  /* Light color text for contrast */
+        border: none;
+        padding: 12px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 6px 3px;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 3px 6px rgba(255, 255, 255, 0.05);  /* Light shadow for contrast on dark background */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
+    }
+
+    .usualButton:hover {
+        background: #333333;  /* A slightly darker green on hover for the dark theme */
+        transform: scale(1.03);
+        color: #EFEFEF;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);  /* Slightly more pronounced light shadow on hover */
+    }
+
+
+    .page_input_text {
+        appearance: none;
+        flex: auto !important;
+        color: #EFEFEF !important;
+        font-size: 20px;
+        background-color: #1A1A1A !important;
+        border: none !important;
+        padding: 4px !important;
+        border-radius: 8px !important; /* Изменено значение на 8px для идентичности со светлой темой */
+        box-shadow: 0 -2px 4px rgba(255, 255, 255, 0.12), 0 -2px 4px rgba(255, 255, 255, 0.18) !important;
+        transition: background-color 0.5s ease, box-shadow 0.5s ease !important;
+    }
+
+    .page_input_text:hover {
+        box-shadow: 0 -3px 6px rgba(255, 255, 255, 0.14), 0 -3px 6px rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .page_input_text:focus {
+        background-color: #2E2E2E !important;
+        outline: none !important;
+        box-shadow: 0 -3px 6px rgba(255, 255, 255, 0.14), 0 -3px 6px rgba(255, 255, 255, 0.2), 0 0 0 2px rgba(196, 196, 196, 0.4) !important;
+    }
+
+    .page_input_text:disabled {
+        background-color: #121212 !important;
+        color: #6B6B6B !important;
+        box-shadow: none !important;
+    }
+
+    .page_input_text::placeholder {
+        color: #6B6B6B !important;
+    }
+
+
+
+
+
+    /*.btn.noHover:hover {*/
+    /*    !* here copy default .btn class styles *!*/
+    /*    color: darkgrey;*/
+    /*    !* or something like that *!*/
+    /*}*/
+
+    .newTaskLabel {
+        color: darkgrey;
+    }
+
+    .tasksLabel {
+        color: darkgrey;
+    }
+
+    .todayLabel {
+        color: darkgrey;
+    }
+
+    .footer {
+        color: grey;
+    }
+
+    .page_newTask_text {
+        color: #bbbbbb !important;
+    }
+
+    .page_newTask_text_red {
+        color: #b9433f !important;
+    }
+
+    .page_tasks_content_taskPlanner {
+        color: lightgray;
+    }
+
+    .page_today_content {
+        color: darkgrey;;
+    }
+}

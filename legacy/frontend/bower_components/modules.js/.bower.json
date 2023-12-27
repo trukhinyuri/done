@@ -1,0 +1,36 @@
+{
+  "name": "modules.js",
+  "main": "modules.js",
+  "authors": [
+    "trukhinyuri <yuri@trukhin.com>"
+  ],
+  "description": "Modules.JS framework for creating modular web clients",
+  "moduleType": [],
+  "keywords": [
+    "modules.js",
+    "modules",
+    "modular",
+    "javascript",
+    "html",
+    "css",
+    "web"
+  ],
+  "license": "The Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0",
+  "ignore": [
+    "/*",
+    "!modules.min.js",
+    "!modules.js"
+  ],
+  "homepage": "modules.plugndo.com",
+  "version": "0.9.0",
+  "_release": "0.9.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.9.0",
+    "commit": "e56c8158bc4d05a7a3cd1682bc82d19787bfa82f"
+  },
+  "_source": "https://github.com/trukhinyuri/modules.js.git",
+  "_target": "^0.9.0",
+  "_originalSource": "modules.js",
+  "_direct": true
+}
