@@ -1,35 +1,9 @@
-//{
-//  "name": "My Go Dev Container",
-//  "containerEnv": {
-//    "PORT": "8080"
-//  },
-//  "containerUser": "trukhinyuri",
-//  "overrideCommand": ["go", "--version"],
-//  "shutdownAction": "stop",
-//  "init": true,
-//  "privileged": true,
-//  "capAdd": ["NET_ADMIN"],
-//  "securityOpt": ["seccomp:unconfined"],
-//  "mounts": [
-//    {
-//      "source": ".",
-//      "target": "/workspace",
-//      "type": "bind"
-//    }
-//  ],
-//  "image": "mcr.microsoft.com/devcontainers/go:latest",
-//  "workspaceFolder": "/workspace",
-//  "onCreateCommand": ["apt", "update"]
-//}
-
 {
-  "name": "Go-MongoDB Dev Container",
-  "image": "golang-mongo-docker-minikube-workspace:0",
-//  "build": {"dockerfile": "Dockerfile"},
-  "privileged": true,
-  "forwardPorts": [
-    27017
-  ],
-  "postCreateCommand": "echo 'DevContainer setup completed.'",
-  "remoteUser": "root"
+  "name": "Done2 Development Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "echo 'Container started'",
+  "runServices": ["kafka", "mongodb"]
 }

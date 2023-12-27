@@ -1,0 +1,8 @@
+{
+  "name": "Go-MongoDB Dev Container",
+  "build": {"dockerfile": "Dockerfile"},
+  "forwardPorts": [
+    27017
+  ],
+  "postCreateCommand": "echo 'DevContainer setup completed.'"
+}

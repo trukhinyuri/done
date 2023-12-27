@@ -1,145 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2136c828-64c0-4f16-ae33-14916b77e5bc" name="Default" comment="Updated visual style">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="44a8fd57-4978-4eaf-9a80-58542c514194" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
-  </component>
-  <component name="GOROOT" url="file:///opt/homebrew/opt/go/libexec" />
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;trukhinyuri&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="4633f458-4b8a-4cbe-ad8d-66063fbd5365" />
-        <option name="url" value="https://github.com/trukhinyuri/done.git" />
-      </UrlAndAccount>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Kotlin File" />
+      </list>
     </option>
   </component>
   <component name="GoLibraries">
-    <option name="indexEntireGoPath" value="false" />
+    <option name="indexEntireGoPath" value="true" />
   </component>
-  <component name="GradleLocalSettings">
-    <option name="externalProjectsViewState">
-      <projects_view />
-    </option>
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/vendor/modules.txt" root0="SKIP_INSPECTION" />
-  </component>
-  <component name="KubernetesApiPersistence">
-    <option name="namespacesByContext">
-      <map>
-        <entry key="docker-desktop" value="default" />
-      </map>
-    </option>
-  </component>
-  <component name="KubernetesApiProvider">{
-  &quot;contexts&quot;: [
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "contexts": [
     {
-      &quot;name&quot;: &quot;docker-desktop&quot;
+      "name": "minikube",
+      "originalNamespace": "default"
     }
   ],
-  &quot;isMigrated&quot;: true
-}</component>
+  "isMigrated": true
+}]]></component>
   <component name="KubernetesSettings">
-    <option name="configuredContextNames">
-      <option value="minikube" />
-    </option>
     <option name="contextName" value="minikube" />
-  </component>
-  <component name="MacroExpansionManager">
-    <option name="directoryName" value="9t981xxy" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectCodeStyleSettingsMigration">
-    <option name="version" value="2" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
-  <component name="ProjectId" id="1QpJgkeB4376ie6YjOgORLXNnV1" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2a81hiHxX3m96Vv5lNbQbvvbzjT" />
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Docker..devcontainer/Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;JAR Application.RUN done.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.MainKt.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.done2.executor&quot;: &quot;Run&quot;,
+    &quot;Makefile Target.all.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.Enable generate summary features in internal mode&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;V_FMT&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20230902_0001&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/trukhinyuri/SynologyDrive/JetBrainsSources/done&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.web.browsers&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mongo&quot;
+    ]
   }
 }</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
-      <window_info id="Space Code Reviews" />
-      <window_info id="Bookmarks" side_tool="true" />
-      <window_info id="Merge Requests" />
-      <window_info id="Commit_Guest" />
-      <window_info id="Pull Requests" />
-      <window_info id="Learn" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10019532" />
+      <window_info id="Space Code Reviews" show_stripe_button="false" />
+      <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
+      <window_info id="Merge Requests" show_stripe_button="false" />
+      <window_info id="Commit_Guest" show_stripe_button="false" />
+      <window_info id="Pull Requests" show_stripe_button="false" />
+      <window_info id="Learn" show_stripe_button="false" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3296494" />
       <window_info id="Commit" order="1" weight="0.25" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="TypeScript" />
-      <window_info anchor="bottom" id="Profiler" />
-      <window_info anchor="bottom" id="TODO" />
-      <window_info anchor="bottom" id="File Transfer" />
-      <window_info anchor="bottom" id="Run" weight="0.3136419" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Profiler" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TODO" show_stripe_button="false" />
+      <window_info anchor="bottom" id="File Transfer" show_stripe_button="false" />
+      <window_info anchor="bottom" id="KafkaToolWindow" weight="0.3294621" />
       <window_info anchor="bottom" id="Version Control" order="0" />
-      <window_info anchor="bottom" id="Problems View" order="1" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="2" visible="true" weight="0.1671378" />
-      <window_info anchor="bottom" id="Services" order="3" weight="0.3051157" />
-      <window_info anchor="right" id="Endpoints" />
+      <window_info anchor="bottom" id="Problems View" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="3" />
+      <window_info anchor="bottom" id="Services" order="4" />
+      <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
       <window_info anchor="right" id="make" side_tool="true" />
-      <window_info anchor="right" id="Meet New UI" side_tool="true" />
-      <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
-      <window_info anchor="right" id="Database" order="1" weight="0.25" />
-      <window_info anchor="right" id="Gradle" order="2" weight="0.25" />
+      <window_info anchor="right" id="BigDataToolWindow" />
+      <window_info anchor="right" id="Coverage" side_tool="true" />
+      <window_info active="true" anchor="right" id="Notifications" order="0" visible="true" weight="0.3296494" />
+      <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
+      <window_info anchor="right" id="Database" order="2" weight="0.3296494" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
     </layout>
   </component>
   <component name="RecentsManager">
@@ -147,238 +111,55 @@
       <recent name="$PROJECT_DIR$/.devcontainer" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker..devcontainer/Dockerfile">
-    <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
-      <option name="appName" />
-      <option name="appServicePlanName" />
-      <option name="appServicePlanResourceGroup" />
-      <option name="appSettingsKey" value="3d0f3e0e-b822-420a-a034-20bd8ac988a0" />
-      <option name="artifact" />
-      <option name="debugOptions" />
-      <option name="deployment" />
-      <option name="deploymentStagingDirectoryPath" />
-      <option name="funcPath" />
-      <option name="functionHostArguments" />
-      <option name="hostJsonPath" />
-      <option name="insightsName" />
-      <option name="instrumentationKey" />
-      <option name="javaVersion" />
-      <option name="localSettingsJsonPath" />
-      <option name="moduleName" />
-      <option name="os" />
-      <option name="pricingTier" />
-      <option name="providerMap">
-        <map />
-      </option>
-      <option name="region" />
-      <option name="resourceGroup" />
-      <option name="stagingFolder" />
-      <option name="subscription" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
-      <method />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
+  <component name="RunManager" selected="JAR Application.RUN done">
+    <configuration name="RUN done" type="JarApplication">
+      <extension name="io.datawire.telepresence.products.idea.IdeaRunConfigurationExtension">
+        <INTERCEPT_ENTRIES />
+      </extension>
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/done/done.jar" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <method v="2">
-        <option name="Make" enabled="true" />
+        <option name="MakeProject" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="TEST_OBJECT" value="class" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="TestNG">
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file enabled="true" id="idea.log" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="go build done/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="done" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/" />
+    <configuration name="build" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="all" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
       <method v="2" />
     </configuration>
-    <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
-      <deployment type="dockerfile">
-        <settings>
-          <option name="imageTag" value="done" />
-          <option name="buildOnly" value="true" />
-          <option name="containerName" value="" />
-          <option name="portBindings">
-            <list>
-              <DockerPortBindingImpl>
-                <option name="containerPort" value="3001" />
-                <option name="hostIp" value="0.0.0.0" />
-                <option name="hostPort" value="0" />
-              </DockerPortBindingImpl>
-            </list>
-          </option>
-          <option name="sourceFilePath" value="Dockerfile" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name=".devcontainer/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
-      <deployment type="dockerfile">
-        <settings>
-          <option name="buildOnly" value="true" />
-          <option name="sourceFilePath" value=".devcontainer/Dockerfile" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile">
-        <settings />
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Docker..devcontainer/Dockerfile" />
-        <item itemvalue="Docker.Dockerfile" />
-      </list>
-    </recent_temporary>
+    <list>
+      <item itemvalue="JAR Application.RUN done" />
+      <item itemvalue="Makefile Target.build" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-gosdk-e6de5fef99a4-91e4cb603404-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.10527.20" />
+        <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-76dd8dae" />
       </set>
     </attachedChunks>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
-  <component name="SwiftWorkspaceSettings">
-    <option name="detectedToolchain" value="true" />
-    <option name="toolchainPathValue" value="/Library/Developer/CommandLineTools" />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2136c828-64c0-4f16-ae33-14916b77e5bc" name="Default" comment="" />
-      <created>1453082894352</created>
+      <changelist id="44a8fd57-4978-4eaf-9a80-58542c514194" name="Changes" comment="" />
+      <created>1703685512534</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1453082894352</updated>
-      <workItem from="1453082895622" duration="29000" />
-      <workItem from="1692106620838" duration="6753000" />
-      <workItem from="1692169880397" duration="401000" />
-      <workItem from="1692170291273" duration="82000" />
-      <workItem from="1692178941922" duration="2171000" />
-      <workItem from="1692197198933" duration="16000" />
-      <workItem from="1692197343189" duration="3344000" />
-      <workItem from="1692208024301" duration="1669000" />
-      <workItem from="1692259816077" duration="69000" />
-      <workItem from="1692259923140" duration="66000" />
-      <workItem from="1692352412996" duration="207000" />
-      <workItem from="1692610305881" duration="1374000" />
-      <workItem from="1692612220101" duration="7764000" />
-      <workItem from="1692711850030" duration="1331000" />
-      <workItem from="1693205376333" duration="12893000" />
-      <workItem from="1693558071021" duration="188000" />
-      <workItem from="1693558280163" duration="12731000" />
-      <workItem from="1693584637583" duration="1796000" />
-      <workItem from="1693598774376" duration="768000" />
-      <workItem from="1693669257587" duration="66000" />
-      <workItem from="1693669332973" duration="1879000" />
-      <workItem from="1694160753848" duration="47000" />
-      <workItem from="1694160982005" duration="1362000" />
-      <workItem from="1694178377674" duration="3803000" />
-      <workItem from="1694436913191" duration="33000" />
-      <workItem from="1694436963301" duration="518000" />
-      <workItem from="1694437492155" duration="45000" />
-      <workItem from="1694437662125" duration="23000" />
-      <workItem from="1694439756436" duration="3038000" />
-      <workItem from="1694454328717" duration="3686000" />
-      <workItem from="1694679906300" duration="17000" />
-      <workItem from="1694679929903" duration="3018000" />
-      <workItem from="1695736492499" duration="1730000" />
-      <workItem from="1695738243069" duration="3672000" />
-      <workItem from="1695821752924" duration="1193000" />
-      <workItem from="1695891433370" duration="122000" />
-      <workItem from="1695891602170" duration="1211000" />
-      <workItem from="1695950613115" duration="474000" />
-      <workItem from="1695956331522" duration="57000" />
-      <workItem from="1695956416125" duration="178000" />
-      <workItem from="1695956614879" duration="594000" />
-      <workItem from="1695964821751" duration="65000" />
-      <workItem from="1695964899639" duration="248000" />
-      <workItem from="1695965356357" duration="30000" />
+      <updated>1703685512534</updated>
+      <workItem from="1703685513569" duration="972000" />
+      <workItem from="1703692948812" duration="194000" />
     </task>
-    <task id="LOCAL-00001" summary="Updated to actual state">
-      <option name="closed" value="true" />
-      <created>1693598825825</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1693598825825</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29000" />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="github/master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Restore removed code :)" />
-    <MESSAGE value="Updated to actual state" />
-    <MESSAGE value="Updated visual style" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated visual style" />
-  </component>
   <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
     <settings-migrated>true</settings-migrated>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
