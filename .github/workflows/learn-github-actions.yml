@@ -1,7 +1,6 @@
 name: learn-github-actions
-run-name: ${{github.actor}} is testing out GitHub Actions
-on:
-  - [push]
+run-name: ${{github.actor}} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
