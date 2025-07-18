@@ -12,7 +12,7 @@
   "author": "Done Contributors",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^27.0.0",
+    "electron": "^37.2.3",
     "electron-builder": "^24.0.0"
   },
   "build": {
