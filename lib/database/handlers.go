@@ -133,7 +133,7 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 	tasksJSON, err := json.Marshal(tasks)
 	errHandler(err)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(tasksJSON)
 }
 
@@ -144,7 +144,7 @@ func (h *Handler) GetTasks(w http.ResponseWriter, r *http.Request) {
 	tasksJSON, err := json.Marshal(tasks)
 	errHandler(err)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(tasksJSON)
 }
 
@@ -161,7 +161,7 @@ func (h *Handler) RemoveTask(w http.ResponseWriter, r *http.Request) {
 	tasksJSON, err := json.Marshal(tasks)
 	errHandler(err)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(tasksJSON)
 }
 
@@ -390,7 +390,7 @@ h1 {
 	tasksJSON, err := json.Marshal(tasks)
 	errHandler(err)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(tasksJSON)
 }
 
@@ -471,7 +471,7 @@ func (h *Handler) RearrangeTasks(w http.ResponseWriter, r *http.Request) {
 	tasksJSON, err := json.Marshal(tasks)
 	errHandler(err)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(tasksJSON)
 }
 
@@ -515,7 +515,7 @@ func (h *Handler) GetTodayResults(w http.ResponseWriter, r *http.Request) {
 	tasksJSON, err := json.Marshal(tasksCompletedToday)
 	errHandler(err)
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(tasksJSON)
 }
 
@@ -736,7 +736,7 @@ func (h *Handler) GetGamification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(gamification)
 }
 
@@ -765,8 +765,7 @@ func (h *Handler) UpdateGamification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "success"})
 }
-
