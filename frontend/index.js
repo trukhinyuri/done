@@ -641,34 +641,6 @@ var Done = window.exports.Done;
                 e.preventDefault();
                 Done.postTask();
             }
-            // Ensure clipboard operations work correctly
-            if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'c' || e.key === 'x' || e.key === 'a')) {
-                // Allow default clipboard operations (paste, copy, cut, select all)
-                return true;
-            }
-        });
-        
-        // Ensure all input fields support clipboard operations
-        var allInputs = document.querySelectorAll('input, textarea');
-        allInputs.forEach(function(input) {
-            // Enable clipboard functionality explicitly
-            input.style.userSelect = 'text';
-            input.style.webkitUserSelect = 'text';
-            
-            // Add paste event listener for better compatibility
-            input.addEventListener('paste', function(e) {
-                // Allow default paste behavior
-                return true;
-            });
-            
-            // Add cut/copy event listeners
-            input.addEventListener('cut', function(e) {
-                return true;
-            });
-            
-            input.addEventListener('copy', function(e) {
-                return true;
-            });
         });
     }
     
