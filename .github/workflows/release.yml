@@ -1,0 +1,72 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - '*.*'
+
+jobs:
+  web:
+    name: Package Web App
+    runs-on: ubuntu-latest
+    outputs:
+      web-zip-path: ${{ steps.package_web.outputs.zip-file }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Package Web App
+        id: package_web
+        run: |
+          zip -r done-web-${{ github.ref_name }}.zip frontend
+          echo "zip-file=done-web-${{ github.ref_name }}.zip" >> $GITHUB_OUTPUT
+
+  mac:
+    name: Package macOS App
+    runs-on: macos-latest
+    outputs:
+      mac-zip-path: ${{ steps.package_mac.outputs.app-file }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set execute permission on build script
+        run: chmod +x build.sh
+      - name: Build macOS .app bundle and package
+        id: package_mac
+        env:
+          VERSION: ${{ github.ref_name }}
+        run: |
+          ./build.sh --clean --app -v "$VERSION"
+          zip -r Done-${VERSION}.app.zip bin/Done.app
+          echo "app-file=Done-${VERSION}.app.zip" >> $GITHUB_OUTPUT
+
+  release:
+    name: Create GitHub Release
+    needs: [web, mac]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+      - name: Upload Web App Archive
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ needs.web.outputs.web-zip-path }}
+          asset_name: done-web-${{ github.ref_name }}.zip
+          asset_content_type: application/zip
+      - name: Upload macOS App
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ needs.mac.outputs.mac-zip-path }}
+          asset_name: Done-${{ github.ref_name }}.app.zip
+          asset_content_type: application/zip
