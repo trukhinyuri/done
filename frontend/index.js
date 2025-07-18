@@ -641,6 +641,21 @@ var Done = window.exports.Done;
                 e.preventDefault();
                 Done.postTask();
             }
+            // Ensure default clipboard hotkeys still work
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'c' || e.key === 'x' || e.key === 'a')) {
+                return true;
+            }
+        });
+
+        // Ensure all input fields support standard clipboard operations
+        var allInputs = document.querySelectorAll('input, textarea');
+        allInputs.forEach(function(input) {
+            input.style.userSelect = 'text';
+            input.style.webkitUserSelect = 'text';
+
+            input.addEventListener('paste', function() { return true; });
+            input.addEventListener('cut', function() { return true; });
+            input.addEventListener('copy', function() { return true; });
         });
     }
     
