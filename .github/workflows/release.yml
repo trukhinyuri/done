@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - '*.*'
+  release:
+    types: [created]
 
 jobs:
   mac:
@@ -18,7 +20,7 @@ jobs:
       - name: Build macOS .app bundle and package
         id: package_mac
         env:
-          VERSION: ${{ github.ref_name }}
+          VERSION: ${{ github.event.release.tag_name || github.ref_name }}
         run: |
           ./build.sh --clean --app -v "$VERSION"
           zip -r Done-${VERSION}.app.zip bin/Done.app
@@ -35,8 +37,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.event.release.tag_name || github.ref_name }}
+          release_name: Release ${{ github.event.release.tag_name || github.ref_name }}
           draft: false
           prerelease: false
       - name: Upload macOS App
