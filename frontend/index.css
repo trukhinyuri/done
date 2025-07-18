@@ -1,0 +1,1254 @@
+/* Ninstyle-style reset and base */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+/* Performance optimizations for animations */
+html {
+    /* Enable smooth scrolling */
+    scroll-behavior: smooth;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb, rgba(255, 255, 255, 0.2));
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover, rgba(255, 255, 255, 0.3));
+    background-clip: padding-box;
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb, rgba(255, 255, 255, 0.2)) transparent;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Ninstyle Typography */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* Ninstyle-style Input */
+input, textarea {
+    box-sizing: border-box;
+    display: block;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    width: 100%;
+    height: 48px;
+    border-radius: 16px;
+    background-color: var(--input-bg);
+    border: 3px solid var(--input-border);
+    color: var(--text-primary);
+    /* More specific transitions for better performance */
+    transition: 
+        border-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-family: inherit;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    /* Enable text selection and clipboard operations */
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+}
+
+textarea {
+    min-height: 88px;
+    height: auto;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+input:hover, textarea:hover {
+    border-color: var(--input-border-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--primary-color-alpha), 0 4px 12px var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Ninstyle Button Base */
+.usualButton {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 4px;
+    cursor: pointer;
+    border-radius: 14px;
+    /* More specific transitions for better performance */
+    transition: 
+        transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        background-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-family: inherit;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px var(--button-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.usualButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.usualButton:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.usualButton:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px var(--button-shadow-hover);
+}
+
+.usualButton:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Main layout */
+.page {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 28px;
+    overflow-y: visible;
+    min-height: calc(100vh - 60px); /* Account for footer */
+    position: relative;
+}
+
+/* New task section - Game Start Screen Style - Sticky */
+.page_newTask {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 28px;
+    background: var(--card-bg-special);
+    border-radius: 24px;
+    box-shadow: 0 8px 24px var(--shadow-color);
+    border: 3px solid var(--card-border-special);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow: visible; /* Changed from hidden to visible to prevent content clipping */
+    min-height: auto; /* Allow natural height based on content */
+    isolation: isolate; /* Create a new stacking context */
+}
+
+.page_newTask::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--ninstyle-red), var(--ninstyle-blue), var(--ninstyle-yellow), var(--ninstyle-green));
+    border-radius: 24px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.page_newTask:hover::before {
+    opacity: 0.15; /* Reduced opacity for subtler effect */
+}
+
+/* Ensure input fields maintain their background on hover */
+.page_newTask:hover input,
+.page_newTask:hover textarea,
+.page_newTask:hover .page_newTask_numberBlock input {
+    background-color: var(--input-bg) !important;
+    position: relative;
+    z-index: 2;
+}
+
+.page_newTask_input {
+    flex: 1 1 300px;
+    min-width: 200px;
+    align-self: stretch;
+}
+
+.page_newTask_input textarea {
+    background: var(--input-bg);
+    border-color: var(--primary-color);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary-emphasis);
+}
+
+.page_newTask_text {
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    align-self: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.page_newTask_numberBlock {
+    width: 64px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.page_newTask_numberBlock input {
+    text-align: center;
+    padding: 8px;
+    height: 40px;
+    background: var(--input-bg);
+    border-width: 2px;
+    font-weight: 700;
+}
+
+/* Schedule Button - Main Action Style */
+.page_newTask_send {
+    order: -1;
+    flex: 0 0 auto;
+    align-self: stretch;
+}
+
+.page_newTask_send button {
+    height: 100%;
+    min-height: 88px;
+    background: linear-gradient(135deg, var(--ninstyle-green) 0%, var(--ninstyle-green-dark) 100%);
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 3px solid var(--ninstyle-green-dark);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+    animation: buttonPulse 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.page_newTask_send button:hover {
+    background: linear-gradient(135deg, var(--ninstyle-green-light) 0%, var(--ninstyle-green) 100%);
+    box-shadow: 0 8px 30px rgba(34, 197, 94, 0.6);
+    animation: none;
+}
+
+/* Ninstyle-style Deadline section */
+.page_newTask_deadline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, var(--ninstyle-red) 0%, var(--ninstyle-red-dark) 100%);
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(230, 0, 18, 0.4);
+    border: 3px solid var(--ninstyle-red-dark);
+    position: relative;
+    overflow: hidden;
+    align-self: center;
+}
+
+.page_newTask_deadline::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.1) 10px,
+        rgba(255, 255, 255, 0.1) 20px
+    );
+    animation: deadlineStripes 20s linear infinite;
+}
+
+@keyframes deadlineStripes {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(20px, 20px); }
+}
+
+.page_newTask_deadline_label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    position: relative;
+}
+
+.page_newTask_deadline_icon {
+    font-size: 20px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    animation: deadlineAlert 1.5s ease-in-out infinite;
+}
+
+@keyframes deadlineAlert {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(-5deg); }
+    75% { transform: scale(1.1) rotate(5deg); }
+}
+
+.page_newTask_deadline_inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1;
+    position: relative;
+}
+
+.page_newTask_deadline_separator {
+    color: white;
+    font-weight: 800;
+    font-size: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page_newTask_deadline .page_newTask_numberBlock {
+    width: 52px;
+}
+
+.page_newTask_deadline .page_newTask_timeHardDeadlineYear {
+    width: 72px;
+}
+
+.page_newTask_deadline input {
+    background: var(--input-bg);
+    border: 3px solid var(--input-border);
+    text-align: center;
+    font-weight: 800;
+    font-size: 16px;
+    height: 38px;
+    color: var(--ninstyle-red);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Done Today section - Golden Victory Screen Style */
+.page_today {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.page_today_header {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ninstyle-yellow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.todayLabel {
+    color: var(--ninstyle-yellow);
+    text-shadow: 2px 2px 0 var(--ninstyle-yellow-dark);
+}
+
+.todayLabel::before {
+    content: '🏆 ';
+    font-size: 28px;
+    animation: trophyBounce 2s ease-in-out infinite;
+}
+
+@keyframes trophyBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.page_today_content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 6px 20px var(--success-shadow);
+    border: 3px solid var(--success-border);
+    min-height: 120px;
+    color: var(--text-primary);
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate; /* Create a new stacking context */
+}
+
+/* Individual completed task items */
+.page_today_content .completed-task {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--success-border);
+    transition: all 0.3s ease;
+    line-height: 1.6;
+}
+
+.page_today_content .completed-task:last-child {
+    margin-bottom: 0;
+}
+
+.page_today_content .completed-task:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--success-shadow);
+    border-color: var(--success-border);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.page_today_content .completed-task .task-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.page_today_content .completed-task .task-time {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.page_today_content::before {
+    content: '⭐';
+    position: absolute;
+    font-size: 100px;
+    opacity: 0.15;
+    right: 20px;
+    bottom: -30px;
+    transform: rotate(-15deg);
+}
+
+.page_today_content:empty::after {
+    content: 'No completed tasks yet - Let\'s get started! 🎮';
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    padding: 20px;
+    opacity: 0.7;
+}
+
+/* Tasks section - Game Level Style */
+.page_tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+}
+
+.page_tasks_header {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ninstyle-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tasksLabel {
+    color: var(--ninstyle-blue);
+    text-shadow: 2px 2px 0 var(--ninstyle-blue-dark);
+}
+
+.tasksLabel::before {
+    content: '🎯 ';
+    font-size: 28px;
+}
+
+.page_tasks_content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 200px;
+    position: relative;
+    padding-top: 20px;
+}
+
+.page_tasks_content_taskPlanner {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    margin: 8px 0;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 2px dashed var(--primary-color-alpha);
+    text-align: center;
+    opacity: 0.8;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.page_tasks_content_taskPlanner:hover {
+    opacity: 1;
+}
+
+/* Footer */
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border-top: 2px solid var(--card-border);
+    margin-top: auto;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* Global Ninstyle Colors for both themes */
+:root {
+    /* Ninstyle Brand Colors - Adjusted for better harmony */
+    --ninstyle-red: #ef4444;
+    --ninstyle-red-dark: #dc2626;
+    --ninstyle-red-light: #f87171;
+    --ninstyle-blue: #3b82f6;
+    --ninstyle-blue-dark: #2563eb;
+    --ninstyle-blue-light: #60a5fa;
+    --ninstyle-green: #22c55e;
+    --ninstyle-green-dark: #16a34a;
+    --ninstyle-green-light: #4ade80;
+    --ninstyle-yellow: #facc15;
+    --ninstyle-yellow-dark: #eab308;
+    --ninstyle-yellow-light: #fde047;
+}
+
+/* Light theme - Ninstyle Colors */
+@media (prefers-color-scheme: light) {
+    :root {
+        
+        /* Base colors */
+        --bg-primary: #ffffff;
+        --bg-secondary: #fafafa;
+        --card-bg: #ffffff;
+        --card-bg-special: #f8fafc;
+        --card-border: #e5e7eb;
+        --card-border-special: #ddd6fe;
+        --text-primary: #1f2937;
+        --text-primary-emphasis: #111827;
+        --text-secondary: #6b7280;
+        --primary-color: #0084ff;
+        --primary-color-alpha: rgba(0, 132, 255, 0.15);
+        
+        /* Component colors */
+        --input-bg: #ffffff;
+        --input-border: #e5e7eb;
+        --input-border-hover: #0084ff;
+        --button-bg: #0084ff;
+        --button-text: #ffffff;
+        --button-shadow: rgba(0, 132, 255, 0.25);
+        --button-shadow-hover: rgba(0, 132, 255, 0.4);
+        
+        /* Success colors */
+        --success-bg: #f0fdf4;
+        --success-bg-dark: #dcfce7;
+        --success-border: #22c55e;
+        --success-shadow: rgba(34, 197, 94, 0.15);
+        
+        /* Shadows */
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --shadow-light: rgba(0, 0, 0, 0.05);
+        --shadow-medium: rgba(0, 0, 0, 0.1);
+        --drop-zone-bg: #eff6ff;
+        
+        /* Scrollbar */
+        --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+        --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+        
+        /* Glow effects */
+        --primary-color-glow: rgba(0, 132, 255, 0.2);
+        --success-glow: rgba(34, 197, 94, 0.15);
+        --danger-glow: rgba(239, 68, 68, 0.15);
+    }
+    
+    html, body {
+        background: var(--bg-secondary);
+    }
+}
+
+/* Dark theme - Ninstyle Colors */
+@media (prefers-color-scheme: dark) {
+    :root {
+        
+        /* Base colors - Deep NinStyle night theme */
+        --bg-primary: #0a0e1a;
+        --bg-secondary: #050813;
+        --card-bg: #141925;
+        --card-bg-special: #1a1f2e;
+        --card-border: #2a3142;
+        --card-border-special: #5b21b6;
+        --text-primary: #e2e8f0;
+        --text-primary-emphasis: #f8fafc;
+        --text-secondary: #8b92a8;
+        --primary-color: #4f7fff;
+        --primary-color-alpha: rgba(79, 127, 255, 0.15);
+        
+        /* Component colors */
+        --input-bg: #1a1f2e;
+        --input-border: #2a3142;
+        --input-border-hover: #4f7fff;
+        --button-bg: #4f7fff;
+        --button-text: #ffffff;
+        --button-shadow: rgba(79, 127, 255, 0.25);
+        --button-shadow-hover: rgba(79, 127, 255, 0.4);
+        
+        /* Success colors - Harmonized green */
+        --success-bg: #0f3a2a;
+        --success-bg-dark: #134e3a;
+        --success-border: #22c55e;
+        --success-shadow: rgba(34, 197, 94, 0.15);
+        
+        /* Shadows */
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.6);
+        --drop-zone-bg: rgba(79, 127, 255, 0.08);
+        
+        /* Scrollbar */
+        --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+        --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+        
+        /* Glow effects */
+        --primary-color-glow: rgba(79, 127, 255, 0.4);
+        --success-glow: rgba(34, 197, 94, 0.3);
+        --danger-glow: rgba(239, 68, 68, 0.3);
+    }
+    
+    html, body {
+        background: var(--bg-secondary);
+    }
+}
+
+/* Drop zone for empty task list */
+.page_tasks_content.drag-active::before {
+    content: 'Drop task at the beginning';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px; /* Increased to match typical task height */
+    background: var(--drop-zone-bg);
+    border: 3px dashed var(--primary-color);
+    border-radius: 16px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-color);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.page_tasks_content.drag-active.show-first-drop::before {
+    display: flex;
+    opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .page {
+        padding: 16px;
+        gap: 20px;
+    }
+    
+    .page_newTask {
+        padding: 20px;
+        gap: 12px;
+    }
+    
+    .page_newTask_input {
+        flex: 1 1 100%;
+        order: -2;
+    }
+    
+    .page_newTask_send {
+        flex: 1 1 100%;
+        order: 10;
+    }
+    
+    .page_newTask_send button {
+        width: 100%;
+    }
+    
+    .page_today_header,
+    .page_tasks_header {
+        font-size: 20px;
+    }
+    
+    .page_newTask_deadline {
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    .page_newTask_deadline_label {
+        font-size: 13px;
+    }
+    
+    .page_newTask_deadline_icon {
+        font-size: 18px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.task {
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gamification - Points Display */
+.points-display {
+    background: linear-gradient(135deg, var(--ninstyle-blue) 0%, var(--ninstyle-blue-dark) 100%);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0, 132, 255, 0.3);
+    border: 3px solid var(--ninstyle-blue-dark);
+    position: relative;
+    overflow: hidden; /* This will clip the rotating animation to the panel bounds */
+    min-height: 80px; /* Ensure minimum height to prevent clipping */
+    isolation: isolate; /* Create a new stacking context */
+}
+
+
+.points-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.points-level {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.level-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.level-title {
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.points-tasks {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tasks-icon {
+    font-size: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.tasks-value {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.points-score {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+}
+
+.points-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.points-value {
+    color: white;
+    font-size: 32px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: -1px;
+}
+
+.level-progress {
+    flex: 1;
+    max-width: 300px;
+}
+
+.progress-bar {
+    height: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ninstyle-yellow) 0%, var(--ninstyle-yellow-light) 100%);
+    border-radius: 20px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: progressShine 2s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.progress-text {
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* Sound toggle button */
+.sound-toggle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 20px;
+}
+
+.sound-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.sound-toggle.enabled {
+    background: var(--ninstyle-green);
+    border-color: var(--ninstyle-green-dark);
+}
+
+.sound-toggle.enabled:hover {
+    background: var(--ninstyle-green-light);
+}
+
+.sound-icon {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Achievement Notifications */
+.achievement-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--ninstyle-yellow) 0%, var(--ninstyle-yellow-dark) 100%);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.4);
+    border: 3px solid var(--ninstyle-yellow-dark);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transform: translateX(400px);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    max-width: 350px;
+}
+
+.achievement-notification.show {
+    transform: translateX(0);
+}
+
+.achievement-icon {
+    font-size: 48px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    animation: achievementBounce 1s ease-in-out;
+}
+
+@keyframes achievementBounce {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.3); }
+    60% { transform: scale(0.9); }
+    80% { transform: scale(1.1); }
+}
+
+.achievement-content {
+    flex: 1;
+}
+
+.achievement-title {
+    color: var(--ninstyle-red);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.achievement-name {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.achievement-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Points Earned Animation */
+.points-earned {
+    position: fixed;
+    color: var(--ninstyle-green);
+    font-size: 24px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 1001;
+    opacity: 0;
+    transform: translateY(0);
+}
+
+.points-earned.animate {
+    animation: pointsFloat 2s ease-out;
+}
+
+@keyframes pointsFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .points-display {
+        padding: 16px;
+    }
+    
+    .points-content {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .points-value {
+        font-size: 24px;
+    }
+    
+    .level-progress {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .achievement-notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+/* Custom Confirmation Modal */
+.confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.confirm-modal.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.confirm-modal-content {
+    background: var(--card-bg);
+    border: 3px solid var(--primary-color);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 0 60px var(--primary-color-glow);
+}
+
+.confirm-modal.show .confirm-modal-content {
+    transform: scale(1);
+}
+
+.confirm-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.confirm-modal-message {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.confirm-modal-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.confirm-modal-button {
+    padding: 12px 24px;
+    border: 3px solid;
+    border-radius: 12px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+    background: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.confirm-modal-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.confirm-modal-button:hover::before {
+    left: 100%;
+}
+
+.confirm-modal-button.confirm {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.confirm-modal-button.confirm:hover {
+    background: #e74c3c;
+    color: white;
+    box-shadow: 0 8px 16px rgba(231, 76, 60, 0.3);
+    transform: translateY(-2px);
+}
+
+.confirm-modal-button.cancel {
+    border-color: var(--text-secondary);
+    color: var(--text-secondary);
+}
+
+.confirm-modal-button.cancel:hover {
+    background: var(--text-secondary);
+    color: var(--bg-primary);
+    box-shadow: 0 8px 16px rgba(108, 117, 125, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Special styling for delete confirmation */
+.confirm-modal.delete .confirm-modal-title {
+    color: #e74c3c;
+}
+
+.confirm-modal.delete .confirm-modal-content {
+    border-color: #e74c3c;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 0 60px rgba(231, 76, 60, 0.3);
+}
+
+/* Special styling for complete confirmation */
+.confirm-modal.complete .confirm-modal-title {
+    color: #27ae60;
+}
+
+.confirm-modal.complete .confirm-modal-content {
+    border-color: #27ae60;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 0 60px rgba(39, 174, 96, 0.3);
+}
+
+.confirm-modal.complete .confirm-modal-button.confirm {
+    border-color: #27ae60;
+    color: #27ae60;
+}
+
+.confirm-modal.complete .confirm-modal-button.confirm:hover {
+    background: #27ae60;
+    color: white;
+    box-shadow: 0 8px 16px rgba(39, 174, 96, 0.3);
+}

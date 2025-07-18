@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modules.js Test</title>
+    <script src="modules.js"></script>
+</head>
+<body>
+    <h1>Modules.js Test Page</h1>
+    
+    <div class="test-module"></div>
+    
+    <script>
+        // Test basic functionality
+        console.log('ModulesJS loaded:', typeof window.ModulesJS !== 'undefined');
+        console.log('Modules available:', typeof Modules !== 'undefined');
+        
+        // Test constants
+        console.log('MODULE constant:', Modules.MODULE);
+        console.log('TEMPLATE constant:', Modules.TEMPLATE);
+        
+        // Test DOM functions
+        console.log('DOM functions available:', typeof Modules.DOM.getModules === 'function');
+        
+        // Test Events
+        console.log('Events functions available:', typeof Modules.Events.addListener === 'function');
+        
+        // Test Loader
+        console.log('Loader functions available:', typeof Modules.Loader.loadModule === 'function');
+        
+        // Test Server with Promise
+        if (typeof Modules.Server.getStringPromise === 'function') {
+            console.log('Promise-based API available');
+        }
+        
+        // Test performance improvements
+        var start = performance.now();
+        for (var i = 0; i < 100; i++) {
+            Modules.DOM.getModules('test-module');
+        }
+        var end = performance.now();
+        console.log('100 getModules calls took:', (end - start).toFixed(2), 'ms');
+    </script>
+</body>
+</html>

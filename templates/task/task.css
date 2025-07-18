@@ -1,0 +1,89 @@
+.task {
+    display: flex;
+    flex-flow: column;
+    align-items: stretch; /* align items in Cross Axis */
+    align-content: stretch; /* Extra space in Cross Axis */
+    margin: 1mm 0 0 0;
+    align-self: stretch;
+}
+
+.task_visible {
+    display: flex;
+    flex-flow: row;
+    align-items: stretch; /* align items in Cross Axis */
+    align-content: stretch; /* Extra space in Cross Axis */
+}
+
+.task_visible_number {
+    margin: 0 2mm 0 0;
+    color: grey;
+}
+
+.task_parameters {
+    margin: 0 2mm 0 0;
+    color: grey;
+    white-space: nowrap;
+}
+
+.task_visible_timeDeadline {
+    color: darkred;
+}
+
+.task_visible_content {
+    margin: 0 0 0 1mm;
+}
+
+.task_visible_content_active {
+    color: green;
+}
+
+.taskButton {
+    color: grey;
+}
+
+.taskStartButton {
+    color: green;
+}
+
+.taskStopButton {
+
+}
+
+.task_progress {
+
+}
+
+.task_controls {
+    visibility: visible;
+    height: auto;
+}
+
+.collapsed {
+    visibility: hidden;
+    height: 0;
+}
+
+
+
+.taskButton:hover {
+    color: darkgray;
+    text-decoration: none;
+}
+
+.page_newSubTask {
+    display: flex;
+    flex-flow: row;
+    align-items: center; /* align items in Cross Axis */
+    align-content: center;
+}
+
+.page_newSubTask_name {
+    text-wrap: none;
+}
+
+.page_newSubTask_input {
+    margin: 0 2mm 0 2mm;
+    flex: auto;
+
+}
+

@@ -1,0 +1,53 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#FF6B6B"/>
+  
+  <!-- Shadow for depth -->
+  <rect x="24" y="24" width="464" height="464" rx="88" fill="#E85D5D" opacity="0.3"/>
+  
+  <!-- Main container -->
+  <rect x="48" y="48" width="416" height="416" rx="72" fill="#4ECDC4"/>
+  
+  <!-- Inner glow -->
+  <rect x="72" y="72" width="368" height="368" rx="56" fill="#5ED4CB" opacity="0.5"/>
+  
+  <!-- Checkmark circle -->
+  <circle cx="256" cy="256" r="140" fill="#FFFFFF"/>
+  <circle cx="256" cy="256" r="120" fill="#45B7AA"/>
+  
+  <!-- Checkmark -->
+  <path d="M 180 256 L 230 306 L 332 204" 
+        stroke="#FFFFFF" 
+        stroke-width="28" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        fill="none"/>
+  
+  <!-- Star accents -->
+  <g transform="translate(120, 120)">
+    <path d="M 0 -20 L 5 -5 L 20 -4 L 7.5 8 L 12 23 L 0 12 L -12 23 L -7.5 8 L -20 -4 L -5 -5 Z" 
+          fill="#FFE66D" 
+          opacity="0.9"/>
+  </g>
+  
+  <g transform="translate(392, 120)">
+    <path d="M 0 -16 L 4 -4 L 16 -3.2 L 6 6.4 L 9.6 18.4 L 0 9.6 L -9.6 18.4 L -6 6.4 L -16 -3.2 L -4 -4 Z" 
+          fill="#FFE66D" 
+          opacity="0.8"/>
+  </g>
+  
+  <g transform="translate(392, 392)">
+    <path d="M 0 -14 L 3.5 -3.5 L 14 -2.8 L 5.25 5.6 L 8.4 16.1 L 0 8.4 L -8.4 16.1 L -5.25 5.6 L -14 -2.8 L -3.5 -3.5 Z" 
+          fill="#FFE66D" 
+          opacity="0.7"/>
+  </g>
+  
+  <!-- Sparkle effects -->
+  <circle cx="160" cy="380" r="6" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="140" cy="360" r="4" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="370" cy="140" r="5" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="350" cy="160" r="3" fill="#FFFFFF" opacity="0.5"/>
+  
+  <!-- Corner highlight -->
+  <ellipse cx="120" cy="120" rx="40" ry="40" fill="#FFFFFF" opacity="0.2"/>
+</svg>

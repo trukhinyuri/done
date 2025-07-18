@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Done></title>
+        <link rel="icon" href="favicon.ico" />
+        <link rel="stylesheet" href="index.css"/>
+        <script src="bower_components/modules.js/modules.js"></script>
+        <script src="utils.js"></script>
+        <script src="sounds.js"></script>
+        <script src="gamification.js"></script>
+        <script src="index.js"></script>
+	</head>
+	<body>
+        <div class="page">
+            <div class="page_newTask">
+                <div class="page_newTask_send">
+                    <button type="submit" class="taskButton usualButton">Schedule</button>
+                </div>
+                <div class="page_newTask_input">
+                    <textarea class="form-control taskText page_input_text" rows="3"></textarea>
+                </div>
+                <div class="page_newTask_text">
+                    in
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_estimationMinutes">
+                    <input type="text" placeholder="0" class="page_newTask_estimationMinutes_value form-control page_input_text"/>
+                </div>
+                <div class="page_newTask_text">
+                    minutes,
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_estimationHours">
+                    <input type="text" placeholder="0" class="page_newTask_estimationHours_value form-control page_input_text"/>
+                </div>
+                <div class="page_newTask_text">
+                    hours,
+                </div>
+                <div class="page_newTask_numberBlock page_newTask_estimationDays">
+                    <input type="text" placeholder="0" class="page_newTask_estimationDays_value form-control page_input_text"/>
+                </div>
+                <div class="page_newTask_text">
+                    days.
+                </div>
+                <div class="page_newTask_deadline">
+                    <div class="page_newTask_deadline_label">
+                        <span class="page_newTask_deadline_icon">⚠️</span>
+                        DEADLINE
+                    </div>
+                    <div class="page_newTask_deadline_inputs">
+                        <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineDay">
+                            <input type="text" placeholder="DD" class="page_newTask_timeHardDeadlineDay_value form-control page_input_text"/>
+                        </div>
+                        <div class="page_newTask_deadline_separator">/</div>
+                        <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineMonth">
+                            <input type="text" placeholder="MM" class="page_newTask_timeHardDeadlineMonth_value form-control page_input_text"/>
+                        </div>
+                        <div class="page_newTask_deadline_separator">/</div>
+                        <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineYear">
+                            <input type="text" placeholder="YYYY" class="page_newTask_timeHardDeadlineYear_value form-control page_input_text"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="page_today">
+                <div class="page_today_header">
+                    <label class="todayLabel">Done today:</label>
+                </div>
+                <div class="page_today_content">
+                </div>
+            </div>
+            <div class="page_tasks">
+                <div class="page_tasks_header">
+                    <label class="tasksLabel">Tasks:</label>
+                </div>
+                <div class="page_tasks_content">
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer_content">
+                Done. The task manager. © Yuri Trukhin, 2016–2025. Build 2025.01.17. Database: BoltDB.
+            </div>
+        </div>
+	</body>
+</html>

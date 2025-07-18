@@ -1,0 +1,635 @@
+/* Ninstyle-style Task Card */
+.task {
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px var(--shadow-color);
+    border: 3px solid var(--card-border);
+    overflow: visible;
+    /* Faster transitions for better performance */
+    transition: 
+        transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        border-color 0.15s cubic-bezier(0.25, 0.8, 0.25, 1),
+        border-radius 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    /* Enable hardware acceleration for smoother animations */
+    will-change: transform, box-shadow, border-color, border-radius;
+    transform: translate3d(0, 0, 0); /* Force hardware acceleration with better GPU layer */
+    backface-visibility: hidden; /* Prevent flickering */
+}
+
+.task:hover {
+    box-shadow: 0 8px 24px var(--shadow-medium);
+    transform: scale(1.02);
+    border-color: var(--primary-color);
+    /* Ensure border radius scales with the transform */
+    border-radius: 22px; /* Slightly larger to compensate for scaling */
+}
+
+/* Update child elements border radius on hover */
+.task:hover .task_controls {
+    border-radius: 0 0 22px 22px;
+}
+
+.task:hover .task_visible {
+    border-radius: 22px 22px 0 0;
+}
+
+/* When controls are collapsed, make task_visible have full border radius */
+.task:hover:has(.task_controls.collapsed) .task_visible {
+    border-radius: 22px;
+}
+
+/* Task content area */
+.task_visible {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 16px;
+    cursor: pointer;
+    transition: 
+        background-color 0.15s cubic-bezier(0.25, 0.8, 0.25, 1),
+        border-radius 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 20px 20px 0 0;
+    /* Enable hardware acceleration */
+    will-change: background-color, border-radius;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+/* When controls are collapsed, make task_visible have full border radius */
+.task:has(.task_controls.collapsed) .task_visible {
+    border-radius: 20px;
+}
+
+.task_visible:hover {
+    background: var(--task-hover-bg);
+}
+
+/* Add visual hint that task is clickable */
+.task_visible::after {
+    content: '▼';
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    font-size: 16px;
+    opacity: 0;
+    transition: 
+        opacity 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    transform: translate3d(-5px, 0, 0);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    color: var(--text-secondary);
+}
+
+.task:hover .task_visible::after {
+    opacity: 0.6;
+    transform: translate3d(0, 0, 0);
+    color: var(--text-primary);
+}
+
+/* When controls are expanded, show up arrow */
+.task:has(.task_controls:not(.collapsed)) .task_visible::after {
+    content: '▲';
+    opacity: 0.8;
+    color: var(--text-primary);
+}
+
+/* Task number - aligned to top */
+.task_visible_number {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 700;
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+/* Task parameters container - vertical stack */
+.task_parameters_container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    min-width: 120px;
+}
+
+/* Ninstyle-style badges - More subtle */
+.task_parameters {
+    color: var(--text-secondary);
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 4px 8px;
+    background: var(--badge-bg-subtle);
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 3px var(--badge-shadow-subtle);
+    border: 1px solid var(--badge-border-subtle);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+}
+
+/* Deadline - Subtle red badge */
+.task_visible_timeDeadline {
+    background: rgba(230, 0, 18, 0.15);
+    border-color: rgba(230, 0, 18, 0.3);
+    color: var(--ninstyle-red);
+    opacity: 0.8;
+}
+
+@keyframes deadlinePulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(230, 0, 18, 0.4);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(230, 0, 18, 0.6);
+    }
+}
+
+/* Needed - Subtle blue badge */
+.task_visible_timeExcecutionEstimated {
+    background: rgba(0, 132, 255, 0.15);
+    border-color: rgba(0, 132, 255, 0.3);
+    color: var(--ninstyle-blue);
+    opacity: 0.8;
+}
+
+/* Spend - Subtle green badge */
+.task_visible_timeExcecutionReal {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: var(--ninstyle-green);
+    opacity: 0.8;
+    position: relative;
+    overflow: hidden;
+}
+
+.task_visible_content_active ~ .task_visible_timeExcecutionReal::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: timerShine 1.5s ease-in-out infinite;
+}
+
+@keyframes timerShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Task text - Most prominent and left-aligned */
+.task_visible_content {
+    flex: 1;
+    color: var(--text-primary-emphasis);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    letter-spacing: -0.02em;
+    text-align: left;
+    /* Enhanced readability */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Active task - Green glow with timer animation */
+.task_visible_content_active {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* Active task container styling */
+.task:has(.task_visible_content_active) {
+    background: linear-gradient(135deg, var(--ninstyle-green) 0%, var(--ninstyle-green-dark) 100%);
+    border-color: var(--ninstyle-green-dark);
+    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
+    animation: activeTaskPulse 2s ease-in-out infinite;
+    transform: scale(1.02);
+}
+
+@keyframes activeTaskPulse {
+    0%, 100% { 
+        box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
+        transform: scale(1.02);
+    }
+    50% { 
+        box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+        transform: scale(1.03);
+    }
+}
+
+/* Ensure text remains readable on active task */
+.task:has(.task_visible_content_active) .task_visible {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.task:has(.task_visible_content_active) .task_visible_content {
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.task:has(.task_visible_content_active) .task_visible_number {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 800;
+}
+
+/* Make badges more visible on green active task background */
+.task:has(.task_visible_content_active) .task_parameters {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-width: 2px;
+    opacity: 1;
+}
+
+.task:has(.task_visible_content_active) .task_visible_timeDeadline {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ninstyle-red);
+    border-color: var(--ninstyle-red);
+    font-weight: 700;
+}
+
+.task:has(.task_visible_content_active) .task_visible_timeExcecutionEstimated {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ninstyle-blue);
+    border-color: var(--ninstyle-blue);
+    font-weight: 700;
+}
+
+.task:has(.task_visible_content_active) .task_visible_timeExcecutionReal {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ninstyle-green-dark);
+    border-color: var(--ninstyle-green-dark);
+    font-weight: 700;
+}
+
+.task:has(.task_visible_content_active) .task_controls {
+    background: rgba(0, 0, 0, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Task controls - Game menu style */
+.task_controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    margin-top: 0;
+    background: var(--controls-bg);
+    border-top: 2px solid var(--card-border);
+    /* Faster transitions for better performance */
+    transition: 
+        max-height 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+        opacity 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        visibility 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+        padding 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+        border-radius 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 0 0 20px 20px;
+    /* Enable hardware acceleration */
+    will-change: max-height, opacity, visibility, padding, border-radius;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+.collapsed {
+    max-height: 0;
+    padding: 0 20px;
+    opacity: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* Ninstyle-style Task buttons */
+.taskButton {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--button-border);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    /* Faster specific transitions for better performance */
+    transition: 
+        transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.15s cubic-bezier(0.25, 0.8, 0.25, 1),
+        background-color 0.15s cubic-bezier(0.25, 0.8, 0.25, 1),
+        border-color 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    /* Enable hardware acceleration */
+    will-change: transform, box-shadow, background-color, border-color;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+.taskButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    /* Faster animation with better easing */
+    transition: 
+        width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: width, height;
+    backface-visibility: hidden;
+}
+
+.taskButton:hover::before {
+    width: 150px;
+    height: 150px;
+}
+
+.taskButton:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px var(--button-shadow);
+    text-decoration: none;
+}
+
+/* Start Button - Green Go! */
+.taskStartButton {
+    background: linear-gradient(135deg, var(--ninstyle-green) 0%, var(--ninstyle-green-dark) 100%);
+    color: white;
+    border-color: var(--ninstyle-green-dark);
+    animation: startButtonPulse 2s ease-in-out infinite;
+}
+
+@keyframes startButtonPulse {
+    0%, 100% { box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3); }
+    50% { box-shadow: 0 4px 16px rgba(34, 197, 94, 0.5); }
+}
+
+.taskStartButton:hover {
+    background: linear-gradient(135deg, var(--ninstyle-green-light) 0%, var(--ninstyle-green) 100%);
+    animation: none;
+}
+
+/* Stop Button - Red Alert */
+.taskStopButton {
+    background: linear-gradient(135deg, var(--ninstyle-red) 0%, var(--ninstyle-red-dark) 100%);
+    color: white;
+    border-color: var(--ninstyle-red-dark);
+}
+
+.taskStopButton:hover {
+    background: linear-gradient(135deg, var(--ninstyle-red-light) 0%, var(--ninstyle-red) 100%);
+}
+
+/* Change Button - Blue Edit */
+.taskChangeButton {
+    background: linear-gradient(135deg, var(--ninstyle-blue) 0%, var(--ninstyle-blue-dark) 100%);
+    color: white;
+    border-color: var(--ninstyle-blue-dark);
+}
+
+.taskChangeButton:hover {
+    background: linear-gradient(135deg, var(--ninstyle-blue-light) 0%, var(--ninstyle-blue) 100%);
+}
+
+/* Complete Button - Yellow Victory */
+.taskCompletedButton {
+    background: linear-gradient(135deg, var(--ninstyle-yellow) 0%, var(--ninstyle-yellow-dark) 100%);
+    color: var(--text-primary);
+    border-color: var(--ninstyle-yellow-dark);
+    font-weight: 800;
+}
+
+.taskCompletedButton:hover {
+    background: linear-gradient(135deg, var(--ninstyle-yellow-light) 0%, var(--ninstyle-yellow) 100%);
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+}
+
+/* Delete Button - Gray Caution */
+.taskRemoveButton {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    color: white;
+    border-color: #6b7280;
+}
+
+.taskRemoveButton:hover {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-color: #dc2626;
+}
+
+/* Subtask section */
+.page_newSubTask {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.page_newSubTask_input {
+    flex: 1;
+}
+
+/* Light theme variables */
+@media (prefers-color-scheme: light) {
+    .task {
+        --task-hover-bg: #f8fafc;
+        --controls-bg: #f8fafc;
+        --badge-bg-subtle: rgba(107, 114, 128, 0.1);
+        --badge-shadow-subtle: rgba(0, 0, 0, 0.05);
+        --badge-border-subtle: rgba(107, 114, 128, 0.2);
+        --badge-shadow: rgba(0, 0, 0, 0.1);
+        --badge-border: transparent;
+        --button-bg: #e5e7eb;
+        --button-text: #1f2937;
+        --button-border: #d1d5db;
+        --button-shadow: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Dark theme variables */
+@media (prefers-color-scheme: dark) {
+    .task {
+        --task-hover-bg: #273449;
+        --controls-bg: #1a202c;
+        --badge-bg-subtle: rgba(148, 163, 184, 0.15);
+        --badge-shadow-subtle: rgba(0, 0, 0, 0.2);
+        --badge-border-subtle: rgba(148, 163, 184, 0.25);
+        --badge-shadow: rgba(0, 0, 0, 0.3);
+        --badge-border: transparent;
+        --button-bg: #1f2937;
+        --button-text: #f9fafb;
+        --button-border: #374151;
+        --button-shadow: rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Make control buttons darker for better contrast */
+    .taskButton {
+        background: #111827;
+        border-color: #374151;
+    }
+    
+    .taskButton:hover {
+        background: #1f2937;
+        border-color: #4b5563;
+    }
+}
+
+/* Drag and drop styles */
+.task[draggable="true"] {
+    cursor: move;
+}
+
+.task.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+/* Drop zone styling */
+.page_tasks_content {
+    position: relative;
+}
+
+/* Visual feedback for drop zones - using CSS variables for dynamic sizing */
+.task {
+    /* Default values that can be overridden by JS */
+    --drop-zone-height: 110px;
+    --drop-zone-margin: 130px;
+    --drop-zone-offset: -120px;
+    /* Smooth transitions for drag and drop interactions */
+    transition: margin 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.task.drag-over-top {
+    margin-top: var(--drop-zone-margin);
+    transition: margin-top 0.2s ease;
+}
+
+.task.drag-over-top::before {
+    content: '';
+    position: absolute;
+    top: var(--drop-zone-offset);
+    left: 0;
+    right: 0;
+    height: var(--drop-zone-height);
+    background: var(--drop-zone-bg);
+    border: 3px dashed var(--primary-color);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-color);
+    opacity: 0.8;
+}
+
+.task.drag-over-top::before {
+    content: 'Drop task here';
+    animation: dropZonePulse 1s ease-in-out infinite;
+}
+
+.task.drag-over {
+    margin-bottom: var(--drop-zone-margin);
+    transition: margin-bottom 0.2s ease;
+}
+
+.task.drag-over::after {
+    content: 'Drop task here';
+    position: absolute;
+    bottom: var(--drop-zone-offset);
+    left: 0;
+    right: 0;
+    height: var(--drop-zone-height);
+    background: var(--drop-zone-bg);
+    border: 3px dashed var(--primary-color);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-color);
+    opacity: 0.8;
+    animation: dropZonePulse 1s ease-in-out infinite;
+}
+
+@keyframes dropZonePulse {
+    0%, 100% {
+        opacity: 0.6;
+        border-color: var(--primary-color);
+    }
+    50% {
+        opacity: 0.9;
+        border-color: var(--primary-color);
+        background: var(--drop-zone-bg);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .task_visible {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 16px;
+    }
+    
+    .task_parameters_container {
+        align-items: flex-start;
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .task_parameters {
+        font-size: 11px;
+        padding: 4px 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .task_controls {
+        padding: 16px;
+        gap: 8px;
+    }
+    
+    .taskButton {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .task_visible_content {
+        font-size: 16px;
+        order: 1;
+    }
+    
+    .task_visible_number {
+        order: 0;
+    }
+    
+    .task_parameters_container {
+        order: 2;
+    }
+}

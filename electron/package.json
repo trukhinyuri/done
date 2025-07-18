@@ -1,0 +1,39 @@
+{
+  "name": "done-electron",
+  "version": "1.0.0",
+  "description": "Electron wrapper for Done task manager",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --mac"
+  },
+  "keywords": ["task", "manager", "productivity"],
+  "author": "Done Contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.trukhinyuri.done",
+    "productName": "Done",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "icon.icns"
+    },
+    "extraResources": [
+      {
+        "from": "../done",
+        "to": "done"
+      },
+      {
+        "from": "../frontend",
+        "to": "frontend"
+      }
+    ]
+  }
+}

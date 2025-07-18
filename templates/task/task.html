@@ -1,0 +1,32 @@
+<div class="task"
+     data-uuid="$uuid;"
+     data-body="$body;"
+     data-timecreated="$timecreated;"
+     data-timecompleted="$timecompleted;"
+     data-duration_execution_estimated_seconds="$duration_execution_estimated_seconds;"
+     data-duration_execution_real_seconds="$duration_execution_real_seconds;"
+     data-time_hard_dead_line="$time_hard_dead_line;"
+>
+    <div class="task_visible" draggable="true">
+        <div class="task_parameters task_visible_timeDeadline">[ $time_hard_dead_line_readable; ]</div>
+        <div class="task_parameters task_visible_timeExcecutionEstimated">[ Нужно: $duration_execution_estimated_seconds_readable; ]</div>
+        <div class="task_parameters task_visible_timeExcecutionReal">[ Затрачено: $duration_execution_real_seconds_readable; ]</div>
+        <div class="task_visible_content">$body;</div>
+    </div>
+    <div class="task_controls collapsed">
+        <!--<button type="submit" class="btn btn-link taskButton taskEditButton">Редактировать</button>-->
+        <button type="submit" class="btn btn-link taskButton taskStartButton">Начать</button>
+        <button type="submit" class="btn btn-link taskButton taskStopButton">Остановить</button>
+        <button type="submit" class="btn btn-link taskButton taskChangeButton">Изменить</button>
+        <button type="submit" class="btn btn-link taskButton taskCompletedButton">Отчитаться</button>
+        <button type="submit" class="btn btn-link taskButton taskRemoveButton">Удалить</button>
+        <!--<div class="page_newSubTask">-->
+            <!--<div class="page_newSubTask_send">-->
+                <!--<button type="submit" class="taskButton btn noBorder noHover usualButton">Сделать</button>-->
+            <!--</div>-->
+            <!--<div class="page_newSubTask_input">-->
+                <!--<input type="text" class="taskText form-control"/>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>

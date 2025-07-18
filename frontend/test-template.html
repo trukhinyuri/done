@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Template Test</title>
+    <script src="bower_components/modules.js/modules.js"></script>
+    <style>
+        .task-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+        }
+        .task {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 5px;
+        }
+        .task_visible {
+            cursor: pointer;
+        }
+        .task_visible:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Template Loading Test</h1>
+    
+    <div class="task-container"></div>
+    
+    <script>
+        // Wait for DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, Modules available:', typeof Modules !== 'undefined');
+            
+            // Test data
+            var testData = {
+                uuid: 'test-123',
+                body: 'Test Task',
+                timecreated: Date.now(),
+                timecompleted: 0,
+                duration_execution_estimated_seconds: 3600,
+                duration_execution_estimated_seconds_readable: '1 hour',
+                duration_execution_real_seconds: 0,
+                duration_execution_real_seconds_readable: '0',
+                time_hard_dead_line: new Date(2024, 11, 31).getTime(),
+                time_hard_dead_line_readable: '2024-12-31'
+            };
+            
+            // Load template
+            console.log('Loading template...');
+            Modules.Loader.loadTemplate('templates', 'task', 'task-container', testData, function() {
+                console.log('Template loaded callback fired');
+                
+                // Check if elements are there
+                setTimeout(function() {
+                    var tasks = document.getElementsByClassName('task');
+                    console.log('Found tasks after load:', tasks.length);
+                    
+                    // Check if drag handlers are attached
+                    if (tasks.length > 0) {
+                        var task = tasks[0];
+                        var taskVisible = task.querySelector('.task_visible');
+                        console.log('Task visible draggable:', taskVisible.draggable);
+                        console.log('Task data-uuid:', task.getAttribute('data-uuid'));
+                        
+                        // Try clicking
+                        taskVisible.click();
+                    }
+                }, 1000);
+            });
+            
+            // Listen for template loaded event
+            Modules.Events.addItemLoadedListener(Modules.TEMPLATE, 'task', function(e) {
+                console.log('Template loaded event received:', e);
+            });
+        });
+    </script>
+</body>
+</html>
