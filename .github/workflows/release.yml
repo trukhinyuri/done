@@ -6,19 +6,6 @@ on:
       - '*.*'
 
 jobs:
-  web:
-    name: Package Web App
-    runs-on: ubuntu-latest
-    outputs:
-      web-zip-path: ${{ steps.package_web.outputs.zip-file }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Package Web App
-        id: package_web
-        run: |
-          zip -r done-web-${{ github.ref_name }}.zip frontend
-          echo "zip-file=done-web-${{ github.ref_name }}.zip" >> $GITHUB_OUTPUT
-
   mac:
     name: Package macOS App
     runs-on: macos-latest
@@ -39,7 +26,7 @@ jobs:
 
   release:
     name: Create GitHub Release
-    needs: [web, mac]
+    needs: mac
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
@@ -52,15 +39,6 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-      - name: Upload Web App Archive
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ needs.web.outputs.web-zip-path }}
-          asset_name: done-web-${{ github.ref_name }}.zip
-          asset_content_type: application/zip
       - name: Upload macOS App
         uses: actions/upload-release-asset@v1
         env:
