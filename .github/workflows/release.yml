@@ -16,6 +16,10 @@ jobs:
       mac-zip-path: ${{ steps.package_mac.outputs.app-file }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          # Checkout the branch or tag for the release (always using latest commit)
+          ref: ${{ github.event.release.target_commitish || github.ref_name }}
       - name: Set execute permission on build script
         run: chmod +x build.sh
       - name: Build macOS .app bundle and package
