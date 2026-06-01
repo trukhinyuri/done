@@ -1171,11 +1171,23 @@ window.exports = window.exports || {};
             _loadHTMLInMemory(pathToItemFiles, itemName, loadedHandler);
         }
 
+        function escapeTemplateValue(value) {
+            if (value === null || value === undefined) {
+                return "";
+            }
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
         function insertTemplate (responseText, dataSource) {
             var result = responseText;
             for (var key in dataSource) {
                 if (dataSource.hasOwnProperty(key)) {
-                    var value = dataSource[key];
+                    var value = escapeTemplateValue(dataSource[key]);
                     // Replace all occurrences of $key;
                     var regex = new RegExp('\\$' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ';', 'g');
                     result = result.replace(regex, value);

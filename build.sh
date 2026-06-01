@@ -195,26 +195,22 @@ build_macos_app() {
     fi
     
     print_status "Building macOS .app bundle..."
-    
-    # Check if binary already exists (from previous build step)
-    if [ ! -f "$OUTPUT_NAME" ]; then
-        # First build the binary
-        print_status "Building macOS binary..."
-        env GOOS="darwin" GOARCH="$(uname -m | sed 's/x86_64/amd64/;s/arm64/arm64/')" go build -o "$OUTPUT_NAME" -ldflags="-X 'main.BuildTime=$BUILD_TIME' -X 'main.BuildVersion=$VERSION' $LDFLAGS" .
-        
-        if [ $? -ne 0 ]; then
-            print_error "Failed to build macOS binary"
-            exit 1
-        fi
+
+    local CURRENT_ARCH
+    CURRENT_ARCH="$(uname -m | sed 's/x86_64/amd64/;s/arm64/arm64/')"
+
+    print_status "Building fresh macOS binary..."
+    env GOOS="darwin" GOARCH="$CURRENT_ARCH" go build -o "$OUTPUT_NAME" -ldflags="-X 'main.BuildTime=$BUILD_TIME' -X 'main.BuildVersion=$VERSION' $LDFLAGS" .
+
+    if [ $? -ne 0 ]; then
+        print_error "Failed to build macOS binary"
+        exit 1
     fi
-    
-    # Check if native version already exists, if not try to build it
-    if [ ! -f "${OUTPUT_NAME}-native" ]; then
-        # Try to build native version for better experience
-        print_status "Attempting to build native WebView version..."
-        env GOOS="darwin" GOARCH="$(uname -m | sed 's/x86_64/amd64/;s/arm64/arm64/')" go build -tags native -o "${OUTPUT_NAME}-native" -ldflags="-X 'main.BuildTime=$BUILD_TIME' -X 'main.BuildVersion=$VERSION' $LDFLAGS" . 2>/dev/null
-    fi
-    
+
+    rm -f "${OUTPUT_NAME}-native"
+    print_status "Attempting to build fresh native WebView version..."
+    env GOOS="darwin" GOARCH="$CURRENT_ARCH" go build -tags native -o "${OUTPUT_NAME}-native" -ldflags="-X 'main.BuildTime=$BUILD_TIME' -X 'main.BuildVersion=$VERSION' $LDFLAGS" . 2>/dev/null || true
+
     # Use native version if available for app bundle
     BINARY_FOR_APP="$OUTPUT_NAME"
     if [ -f "${OUTPUT_NAME}-native" ]; then

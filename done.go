@@ -29,6 +29,7 @@ var (
 // Command-line flags
 var (
 	dbUpgradePtr   *bool   // Flag to upgrade database schema
+	serviceHostPtr *string // Host address for the HTTP server
 	servicePortPtr *int    // Port number for the HTTP server
 	versionPtr     *bool   // Flag to display version information
 	dbPathPtr      *string // Path to the database file
@@ -43,8 +44,9 @@ func init() {
 	if err == nil {
 		defaultDBPath = filepath.Join(homeDir, "tasks.db")
 	}
-	
+
 	dbUpgradePtr = flag.Bool("dbupgrade", false, "Upgrade database for new version compatibility")
+	serviceHostPtr = flag.String("host", "127.0.0.1", "Service host")
 	servicePortPtr = flag.Int("port", 3001, "Service port")
 	versionPtr = flag.Bool("version", false, "Show app version")
 	dbPathPtr = flag.String("dbpath", defaultDBPath, "Path to database file")
@@ -54,11 +56,11 @@ func init() {
 
 func main() {
 	flag.Parse()
-	
+
 	// Check if another instance is already running
-	if !*versionPtr && isAlreadyRunning(*servicePortPtr) {
-		log.Printf("Done is already running on port %d", *servicePortPtr)
-		
+	if !*versionPtr && isAlreadyRunning(*serviceHostPtr, *servicePortPtr) {
+		log.Printf("Done is already running on %s", listenAddress(*serviceHostPtr, *servicePortPtr))
+
 		// If running as app, just open the browser/window
 		if webview.IsRunningAsApp() {
 			if *chromePtr {
@@ -68,22 +70,40 @@ func main() {
 			}
 			return
 		}
-		
+
 		log.Fatal("Another instance is already running. Please close it first.")
 	}
-	
+
 	submain(flag.Args())
 }
 
 // submain is the main entry point after flag parsing
-// isAlreadyRunning checks if the application is already running on the given port
-func isAlreadyRunning(port int) bool {
-	conn, err := net.Dial("tcp", fmt.Sprintf("localhost:%d", port))
+// isAlreadyRunning checks if the application is already running on the given address.
+func isAlreadyRunning(host string, port int) bool {
+	dialHost := host
+	if dialHost == "" || dialHost == "0.0.0.0" || dialHost == "::" {
+		dialHost = "localhost"
+	}
+	conn, err := net.Dial("tcp", listenAddress(dialHost, port))
 	if err == nil {
 		conn.Close()
 		return true
 	}
 	return false
+}
+
+func listenAddress(host string, port int) string {
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	return net.JoinHostPort(host, strconv.Itoa(port))
+}
+
+func browserURL(host string, port int) string {
+	if host == "" || host == "127.0.0.1" || host == "::1" || host == "0.0.0.0" || host == "::" {
+		host = "localhost"
+	}
+	return "http://" + net.JoinHostPort(host, strconv.Itoa(port))
 }
 
 func submain(args []string) {
@@ -134,31 +154,33 @@ func startService() {
 
 	// API endpoints
 	apiPath := "/api"
-	mux.HandleFunc(apiPath+"/version", testApi)                                                      // Get version information
-	mux.HandleFunc(apiPath+"/getTasks", handler.GetTasks)                                           // Get all tasks
-	mux.HandleFunc(apiPath+"/getTodayResults", handler.GetTodayResults)                             // Get today's completed tasks
-	mux.HandleFunc(apiPath+"/addTask", handler.AddTask)                                             // Create a new task
-	mux.HandleFunc(apiPath+"/removeTask", handler.RemoveTask)                                       // Delete a task
-	mux.HandleFunc(apiPath+"/rearrangeTasks", handler.RearrangeTasks)                               // Reorder tasks (drag & drop)
-	mux.HandleFunc(apiPath+"/completeTask", handler.CompleteTask)                                   // Mark task as completed
+	mux.HandleFunc(apiPath+"/version", testApi)                                                       // Get version information
+	mux.HandleFunc(apiPath+"/getTasks", handler.GetTasks)                                             // Get all tasks
+	mux.HandleFunc(apiPath+"/getTodayResults", handler.GetTodayResults)                               // Get today's completed tasks
+	mux.HandleFunc(apiPath+"/addTask", handler.AddTask)                                               // Create a new task
+	mux.HandleFunc(apiPath+"/updateTask", handler.UpdateTask)                                         // Update an existing task
+	mux.HandleFunc(apiPath+"/removeTask", handler.RemoveTask)                                         // Delete a task
+	mux.HandleFunc(apiPath+"/rearrangeTasks", handler.RearrangeTasks)                                 // Reorder tasks (drag & drop)
+	mux.HandleFunc(apiPath+"/completeTask", handler.CompleteTask)                                     // Mark task as completed
 	mux.HandleFunc(apiPath+"/updateTaskExecutionRealSeconds", handler.UpdateTaskExecutionRealSeconds) // Update task timer
-	mux.HandleFunc(apiPath+"/getGamification", handler.GetGamification)                             // Get gamification stats
-	mux.HandleFunc(apiPath+"/updateGamification", handler.UpdateGamification)                       // Update gamification stats
+	mux.HandleFunc(apiPath+"/getGamification", handler.GetGamification)                               // Get gamification stats
+	mux.HandleFunc(apiPath+"/updateGamification", handler.UpdateGamification)                         // Update gamification stats
 
 	// Serve static files from frontend directory
 	fileServer := http.FileServer(http.Dir("./frontend"))
 	mux.Handle("/", http.StripPrefix("/", fileServer))
 
 	servicePortString := strconv.Itoa(*servicePortPtr)
-	log.Println("Starting server on :" + servicePortString)
-	
+	listenAddr := listenAddress(*serviceHostPtr, *servicePortPtr)
+	log.Println("Starting server on " + listenAddr)
+
 	// Launch webview if requested or if running as .app bundle
 	// But only if not launched by native launcher (which handles the UI)
 	if (*nativePtr || *chromePtr) && !webview.IsRunningAsApp() {
 		go func() {
 			// Give the server a moment to start
 			time.Sleep(500 * time.Millisecond)
-			
+
 			if *chromePtr {
 				webview.LaunchWebViewChrome(*servicePortPtr)
 			} else {
@@ -166,12 +188,12 @@ func startService() {
 			}
 		}()
 	} else if !webview.IsRunningAsApp() {
-		log.Printf("Open your browser and navigate to: http://localhost:%s", servicePortString)
+		log.Printf("Open your browser and navigate to: %s", browserURL(*serviceHostPtr, *servicePortPtr))
 	} else {
 		log.Printf("Server started on port %s, waiting for native app to connect", servicePortString)
 	}
-	
-	log.Fatal(http.ListenAndServe(":"+servicePortString, mux))
+
+	log.Fatal(http.ListenAndServe(listenAddr, mux))
 }
 
 // Test struct is deprecated but kept for backward compatibility
@@ -192,9 +214,9 @@ func testApi(w http.ResponseWriter, r *http.Request) {
 			buildDate = t.Format("2006.01.02")
 		}
 	}
-	
+
 	response := map[string]interface{}{
-		"version": BuildVersion,
+		"version":   BuildVersion,
 		"buildTime": BuildTime,
 		"buildDate": buildDate,
 	}

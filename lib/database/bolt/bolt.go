@@ -179,6 +179,51 @@ func (b *BoltDB) RemoveTask(uuid string) error {
 	})
 }
 
+func (b *BoltDB) CompleteTask(uuid string, completedAt time.Time) (*database.Task, error) {
+	var completedTask database.Task
+
+	err := b.db.Update(func(tx *bolt.Tx) error {
+		tasks := tx.Bucket([]byte(tasksBucket))
+		if tasks == nil {
+			return errors.New("tasks bucket not found")
+		}
+
+		completed := tx.Bucket([]byte(completedTasksBucket))
+		if completed == nil {
+			return errors.New("completed tasks bucket not found")
+		}
+
+		data := tasks.Get([]byte(uuid))
+		if data == nil {
+			return errors.New("task not found")
+		}
+
+		if err := json.Unmarshal(data, &completedTask); err != nil {
+			return err
+		}
+
+		completedTask.Body = utils.CleanTaskText(completedTask.Body)
+		completedTask.TimeCompleted = completedAt
+
+		completedData, err := json.Marshal(&completedTask)
+		if err != nil {
+			return err
+		}
+
+		if err := completed.Put([]byte(completedTask.UUID), completedData); err != nil {
+			return err
+		}
+
+		return tasks.Delete([]byte(uuid))
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &completedTask, nil
+}
+
 func (b *BoltDB) GetCompletedTasks() ([]database.Task, error) {
 	var tasks []database.Task
 
@@ -272,4 +317,3 @@ func (b *BoltDB) UpdateGamification(gamification *database.Gamification) error {
 func (b *BoltDB) DBUpgrade() string {
 	return "DBUpgrade not required for BoltDB"
 }
-

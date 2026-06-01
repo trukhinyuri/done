@@ -17,14 +17,14 @@ type Task struct {
 }
 
 type Gamification struct {
-	TotalPoints      int       `json:"total_points"`
-	CurrentStreak    int       `json:"current_streak"`
-	LongestStreak    int       `json:"longest_streak"`
+	TotalPoints        int        `json:"total_points"`
+	CurrentStreak      int        `json:"current_streak"`
+	LongestStreak      int        `json:"longest_streak"`
 	LastCompletionDate *time.Time `json:"last_completion_date"`
-	Level            int       `json:"level"`
-	CompletedTasks   int       `json:"completed_tasks"`
-	FirstTaskDate    *time.Time `json:"first_task_date"`
-	Achievements     []string  `json:"achievements"`
+	Level              int        `json:"level"`
+	CompletedTasks     int        `json:"completed_tasks"`
+	FirstTaskDate      *time.Time `json:"first_task_date"`
+	Achievements       []string   `json:"achievements"`
 }
 
 type Database interface {
@@ -36,6 +36,7 @@ type Database interface {
 	AddTask(task *Task) error
 	UpdateTask(task *Task) error
 	RemoveTask(uuid string) error
+	CompleteTask(uuid string, completedAt time.Time) (*Task, error)
 
 	GetCompletedTasks() ([]Task, error)
 	AddCompletedTask(task *Task) error
@@ -45,4 +46,3 @@ type Database interface {
 
 	DBUpgrade() string
 }
-

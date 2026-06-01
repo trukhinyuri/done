@@ -5,25 +5,29 @@ import (
 	"strings"
 )
 
+const base64TaskPrefix = "b64:"
+
 // DecodeTaskText decodes task text that may be encoded in various formats
 func DecodeTaskText(text string) string {
 	if text == "" {
 		return text
 	}
 
-	// Try base64 decoding first (URL-safe variant)
-	if isBase64Encoded(text) {
-		decoded, err := decodeBase64(text)
+	// New task text uses an explicit prefix so normal words are never
+	// accidentally treated as base64.
+	if strings.HasPrefix(text, base64TaskPrefix) {
+		decoded, err := decodeBase64(strings.TrimPrefix(text, base64TaskPrefix))
 		if err == nil {
 			return decoded
 		}
+		return text
 	}
 
 	// Handle legacy UUID format for backward compatibility
 	if strings.Contains(text, "280d382c-f23e-4631-8551-f43661405497") ||
 		strings.Contains(text, "e6f23f57-6cad-451b-8306-7939e25542dc") ||
 		strings.Contains(text, "a7f3d0a1-2b5e-4c6d-8e9f-1a2b3c4d5e6f") {
-		
+
 		text = strings.ReplaceAll(text, "280d382c-f23e-4631-8551-f43661405497", "\"")
 		text = strings.ReplaceAll(text, "e6f23f57-6cad-451b-8306-7939e25542dc", "'")
 		text = strings.ReplaceAll(text, "a7f3d0a1-2b5e-4c6d-8e9f-1a2b3c4d5e6f", "\n")
@@ -49,19 +53,19 @@ func DecodeTaskText(text string) string {
 func CleanTaskText(text string) string {
 	// First decode
 	text = DecodeTaskText(text)
-	
+
 	// Remove any remaining UUID artifacts (in case of double encoding)
 	text = strings.ReplaceAll(text, "280d382c-f23e-4631-8551-f43661405497", "\"")
 	text = strings.ReplaceAll(text, "e6f23f57-6cad-451b-8306-7939e25542dc", "'")
 	text = strings.ReplaceAll(text, "a7f3d0a1-2b5e-4c6d-8e9f-1a2b3c4d5e6f", "\n")
-	
+
 	return text
 }
 
 func isBase64Encoded(s string) bool {
 	// Check if string only contains base64 characters (including URL-safe variants)
 	for _, c := range s {
-		if !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || 
+		if !((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
 			(c >= '0' && c <= '9') || c == '-' || c == '_') {
 			return false
 		}
@@ -73,7 +77,7 @@ func decodeBase64(s string) (string, error) {
 	// Convert URL-safe base64 to standard base64
 	s = strings.ReplaceAll(s, "-", "+")
 	s = strings.ReplaceAll(s, "_", "/")
-	
+
 	// Add padding if needed
 	switch len(s) % 4 {
 	case 2:
@@ -81,11 +85,11 @@ func decodeBase64(s string) (string, error) {
 	case 3:
 		s += "="
 	}
-	
+
 	decoded, err := base64.StdEncoding.DecodeString(s)
 	if err != nil {
 		return "", err
 	}
-	
+
 	return string(decoded), nil
 }

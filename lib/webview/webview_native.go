@@ -1,3 +1,4 @@
+//go:build darwin && native
 // +build darwin,native
 
 package webview
@@ -12,34 +13,34 @@ package webview
 void LaunchNativeWebView(const char* url) {
     @autoreleasepool {
         [NSApplication sharedApplication];
-        
+
         // Create window
         NSRect frame = NSMakeRect(0, 0, 1200, 800);
-        NSWindow* window = [[NSWindow alloc] 
+        NSWindow* window = [[NSWindow alloc]
             initWithContentRect:frame
-            styleMask:(NSWindowStyleMaskTitled | 
-                      NSWindowStyleMaskClosable | 
-                      NSWindowStyleMaskMiniaturizable | 
+            styleMask:(NSWindowStyleMaskTitled |
+                      NSWindowStyleMaskClosable |
+                      NSWindowStyleMaskMiniaturizable |
                       NSWindowStyleMaskResizable)
             backing:NSBackingStoreBuffered
             defer:NO];
-        
+
         [window setTitle:@"Done"];
         [window center];
-        
+
         // Create WebView
         WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
         WKWebView* webView = [[WKWebView alloc] initWithFrame:frame configuration:config];
-        
+
         // Load URL
         NSURL* nsurl = [NSURL URLWithString:[NSString stringWithUTF8String:url]];
         NSURLRequest* request = [NSURLRequest requestWithURL:nsurl];
         [webView loadRequest:request];
-        
+
         // Set up window
         [window setContentView:webView];
         [window makeKeyAndOrderFront:nil];
-        
+
         // Run app
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
         [NSApp activateIgnoringOtherApps:YES];
@@ -60,7 +61,7 @@ import (
 // LaunchWebView creates a native WKWebView window for the application on macOS
 func LaunchWebView(port int) {
 	url := fmt.Sprintf("http://localhost:%d", port)
-	
+
 	// Wait for server to be ready
 	log.Println("Waiting for server to start...")
 	for i := 0; i < 30; i++ {
@@ -71,7 +72,7 @@ func LaunchWebView(port int) {
 		}
 		time.Sleep(100 * time.Millisecond)
 	}
-	
+
 	// For native build, just open in default browser
 	// This is simpler and avoids separate process issues
 	cmd := exec.Command("open", url)
@@ -83,7 +84,7 @@ func LaunchWebView(port int) {
 // LaunchWebViewChrome launches Chrome in app mode on macOS
 func LaunchWebViewChrome(port int) {
 	url := fmt.Sprintf("http://localhost:%d", port)
-	
+
 	// Wait for server to be ready
 	log.Println("Waiting for server to start...")
 	for i := 0; i < 30; i++ {
@@ -94,11 +95,11 @@ func LaunchWebViewChrome(port int) {
 		}
 		time.Sleep(100 * time.Millisecond)
 	}
-	
+
 	// Use Chrome app mode for native-like experience
 	chromeApp := "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 	if _, err := os.Stat(chromeApp); err == nil {
-		cmd := exec.Command(chromeApp, 
+		cmd := exec.Command(chromeApp,
 			"--app="+url,
 			"--new-window",
 			"--window-size=1200,800",

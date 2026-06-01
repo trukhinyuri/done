@@ -3,12 +3,13 @@ package database
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -22,94 +23,147 @@ type Handler struct {
 	DB database.Database
 }
 
+type addTaskRequest struct {
+	UUID          string `json:"uuid"`
+	Body          string `json:"body"`
+	Estimation    int    `json:"estimation"`
+	DeadlineMonth string `json:"deadlineMonth"`
+	DeadlineDay   string `json:"deadlineDay"`
+	DeadlineYear  string `json:"deadlineYear"`
+}
+
+type rearrangeTasksRequest struct {
+	SourceUUID      string `json:"source_uuid"`
+	DestinationUUID string `json:"destination_uuid"`
+	InsertBefore    bool   `json:"insert_before"`
+}
+
 func NewHandler(db database.Database) *Handler {
 	return &Handler{DB: db}
 }
 
-func errHandler(err error) {
-	if err != nil {
-		panic(err)
+func requireMethod(w http.ResponseWriter, r *http.Request, method string) bool {
+	if r.Method == method {
+		return true
+	}
+	w.Header().Set("Allow", method)
+	http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+	return false
+}
+
+func writeJSON(w http.ResponseWriter, value interface{}) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	if err := json.NewEncoder(w).Encode(value); err != nil {
+		log.Printf("Error writing JSON response: %v", err)
 	}
 }
 
-func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
-	tasks, err := h.DB.GetTasks()
-	errHandler(err)
+func writeTasks(w http.ResponseWriter, db database.Database) {
+	tasks, err := db.GetTasks()
+	if err != nil {
+		log.Printf("Error getting tasks: %v", err)
+		http.Error(w, "failed to get tasks", http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, tasks)
+}
 
-	// Increment order for all existing tasks
-	for i := 0; i < len(tasks); i++ {
-		tasks[i].Order++
-		err = h.DB.UpdateTask(&tasks[i])
-		errHandler(err)
+func parseOptionalInt(value, placeholder string) (int, error) {
+	value = strings.TrimSpace(value)
+	if value == "" || value == "0" || value == placeholder {
+		return 0, nil
+	}
+	return strconv.Atoi(value)
+}
+
+func parseAddTaskRequest(r *http.Request) (*addTaskRequest, error) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		return nil, err
 	}
 
-	newTaskJSON, err := ioutil.ReadAll(r.Body)
-	errHandler(err)
+	raw := strings.TrimSpace(string(body))
+	if raw == "" {
+		return nil, fmt.Errorf("empty request body")
+	}
 
-	newTaskJSONString := string(newTaskJSON)
-	newTaskSplitted := strings.Split(newTaskJSONString, "$;")
-	body := utils.CleanTaskText(newTaskSplitted[0]) // Decode and clean the task text
-	durationExecutionEstimatedSeconds, err := strconv.Atoi(newTaskSplitted[1])
-	errHandler(err)
-	
-	// Parse deadline fields with validation
-	deadlineMonth := 0
-	if newTaskSplitted[2] != "" && newTaskSplitted[2] != "MM" {
-		deadlineMonth, err = strconv.Atoi(newTaskSplitted[2])
-		if err != nil {
-			log.Printf("Invalid deadline month: %s, using 0\n", newTaskSplitted[2])
-			deadlineMonth = 0
-		}
-	}
-	
-	deadlineDay := 0
-	if newTaskSplitted[3] != "" && newTaskSplitted[3] != "DD" {
-		deadlineDay, err = strconv.Atoi(newTaskSplitted[3])
-		if err != nil {
-			log.Printf("Invalid deadline day: %s, using 0\n", newTaskSplitted[3])
-			deadlineDay = 0
-		}
-	}
-	
-	// Handle year parameter if provided
-	var deadlineYear int
-	if len(newTaskSplitted) > 4 && newTaskSplitted[4] != "" && newTaskSplitted[4] != "YYYY" {
-		deadlineYear, err = strconv.Atoi(newTaskSplitted[4])
-		if err != nil {
-			log.Printf("Invalid deadline year: %s, using 0\n", newTaskSplitted[4])
-			deadlineYear = 0
+	var request addTaskRequest
+	if strings.HasPrefix(raw, "{") {
+		if err := json.Unmarshal(body, &request); err != nil {
+			return nil, err
 		}
 	} else {
-		deadlineYear = 0
+		parts := strings.Split(raw, "$;")
+		if len(parts) < 4 {
+			return nil, fmt.Errorf("expected task body, estimation, month, and day")
+		}
+
+		estimation, err := strconv.Atoi(strings.TrimSpace(parts[1]))
+		if err != nil {
+			return nil, err
+		}
+
+		request = addTaskRequest{
+			Body:          parts[0],
+			Estimation:    estimation,
+			DeadlineMonth: parts[2],
+			DeadlineDay:   parts[3],
+		}
+		if len(parts) > 4 {
+			request.DeadlineYear = parts[4]
+		}
 	}
 
-	var task database.Task
-	task.UUID = uuid.NewV4().String()
-	task.Body = body
-	task.DurationExecutionEstimatedSeconds = durationExecutionEstimatedSeconds
+	request.Body = strings.TrimSpace(utils.CleanTaskText(request.Body))
+	if request.Body == "" {
+		return nil, fmt.Errorf("task body is required")
+	}
+	if request.Estimation < 0 {
+		return nil, fmt.Errorf("estimation must be non-negative")
+	}
+
+	return &request, nil
+}
+
+func taskDeadlineFromRequest(request *addTaskRequest) (time.Time, error) {
+	deadlineMonth, err := parseOptionalInt(request.DeadlineMonth, "MM")
+	if err != nil {
+		return time.Time{}, fmt.Errorf("invalid deadline month")
+	}
+
+	deadlineDay, err := parseOptionalInt(request.DeadlineDay, "DD")
+	if err != nil {
+		return time.Time{}, fmt.Errorf("invalid deadline day")
+	}
+
+	deadlineYear, err := parseOptionalInt(request.DeadlineYear, "YYYY")
+	if err != nil {
+		return time.Time{}, fmt.Errorf("invalid deadline year")
+	}
+
+	if deadlineMonth < 0 || deadlineMonth > 12 {
+		return time.Time{}, fmt.Errorf("deadline month must be between 1 and 12")
+	}
+	if deadlineDay < 0 || deadlineDay > 31 {
+		return time.Time{}, fmt.Errorf("deadline day must be between 1 and 31")
+	}
 
 	currentYear, currentMonth, _ := time.Now().Date()
 	var taskDeadlineYear int
 
-	if (deadlineMonth == 0) && (deadlineDay == 0) && (deadlineYear == 0) {
-		// No deadline set
+	if deadlineMonth == 0 && deadlineDay == 0 && deadlineYear == 0 {
 		taskDeadlineYear = 9999
 		deadlineMonth = 1
 		deadlineDay = 1
 	} else {
-		// If year is explicitly provided, use it
 		if deadlineYear > 0 {
 			taskDeadlineYear = deadlineYear
+		} else if deadlineMonth < int(currentMonth) {
+			taskDeadlineYear = currentYear + 1
 		} else {
-			// Legacy behavior: guess the year based on month
-			if deadlineMonth < int(currentMonth) {
-				taskDeadlineYear = currentYear + 1
-			} else {
-				taskDeadlineYear = currentYear
-			}
+			taskDeadlineYear = currentYear
 		}
-		
-		// Set defaults for missing values
+
 		if deadlineMonth == 0 {
 			deadlineMonth = int(time.Now().Month())
 		}
@@ -118,67 +172,200 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	task.TimeHardDeadline = time.Date(taskDeadlineYear, time.Month(deadlineMonth), deadlineDay, 0, 0, 0, 0, time.UTC)
+	deadline := time.Date(taskDeadlineYear, time.Month(deadlineMonth), deadlineDay, 0, 0, 0, 0, time.UTC)
+	if deadline.Month() != time.Month(deadlineMonth) || deadline.Day() != deadlineDay || deadline.Year() != taskDeadlineYear {
+		return time.Time{}, fmt.Errorf("invalid deadline date")
+	}
 
-	timeNow := time.Now()
-	task.TimeCreated = timeNow
-	task.Order = 0
+	return deadline, nil
+}
 
-	err = h.DB.AddTask(&task)
-	errHandler(err)
+func hasAchievement(gamification *database.Gamification, achievementID string) bool {
+	for _, existing := range gamification.Achievements {
+		if existing == achievementID {
+			return true
+		}
+	}
+	return false
+}
 
-	tasks, err = h.DB.GetTasks()
-	errHandler(err)
+func addAchievement(gamification *database.Gamification, achievementID string) {
+	if !hasAchievement(gamification, achievementID) {
+		gamification.Achievements = append(gamification.Achievements, achievementID)
+	}
+}
 
-	tasksJSON, err := json.Marshal(tasks)
-	errHandler(err)
+func completedTasksOnDate(db database.Database, date time.Time) (int, error) {
+	completedTasks, err := db.GetCompletedTasks()
+	if err != nil {
+		return 0, err
+	}
 
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(tasksJSON)
+	year, month, day := date.Date()
+	count := 0
+	for _, task := range completedTasks {
+		taskYear, taskMonth, taskDay := task.TimeCompleted.Date()
+		if taskYear == year && taskMonth == month && taskDay == day {
+			count++
+		}
+	}
+	return count, nil
+}
+
+func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
+
+	request, err := parseAddTaskRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	deadline, err := taskDeadlineFromRequest(request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	tasks, err := h.DB.GetTasks()
+	if err != nil {
+		log.Printf("Error getting tasks: %v", err)
+		http.Error(w, "failed to get tasks", http.StatusInternalServerError)
+		return
+	}
+
+	for i := 0; i < len(tasks); i++ {
+		tasks[i].Order++
+		if err = h.DB.UpdateTask(&tasks[i]); err != nil {
+			log.Printf("Error updating task order: %v", err)
+			http.Error(w, "failed to update task order", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	task := database.Task{
+		UUID:                              uuid.NewV4().String(),
+		Body:                              request.Body,
+		DurationExecutionEstimatedSeconds: request.Estimation,
+		TimeHardDeadline:                  deadline,
+		TimeCreated:                       time.Now(),
+		Order:                             0,
+	}
+
+	if err = h.DB.AddTask(&task); err != nil {
+		log.Printf("Error adding task: %v", err)
+		http.Error(w, "failed to add task", http.StatusInternalServerError)
+		return
+	}
+
+	writeTasks(w, h.DB)
+}
+
+func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
+
+	request, err := parseAddTaskRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if strings.TrimSpace(request.UUID) == "" {
+		http.Error(w, "task uuid is required", http.StatusBadRequest)
+		return
+	}
+
+	deadline, err := taskDeadlineFromRequest(request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	task, err := h.DB.GetTaskByUUID(request.UUID)
+	if err != nil {
+		http.Error(w, "task not found", http.StatusNotFound)
+		return
+	}
+
+	task.Body = request.Body
+	task.DurationExecutionEstimatedSeconds = request.Estimation
+	task.TimeHardDeadline = deadline
+
+	if err = h.DB.UpdateTask(task); err != nil {
+		log.Printf("Error updating task: %v", err)
+		http.Error(w, "failed to update task", http.StatusInternalServerError)
+		return
+	}
+
+	writeTasks(w, h.DB)
 }
 
 func (h *Handler) GetTasks(w http.ResponseWriter, r *http.Request) {
+	if !requireMethod(w, r, http.MethodGet) {
+		return
+	}
+
 	tasks, err := h.DB.GetTasks()
-	errHandler(err)
+	if err != nil {
+		log.Printf("Error getting tasks: %v", err)
+		http.Error(w, "failed to get tasks", http.StatusInternalServerError)
+		return
+	}
 
-	tasksJSON, err := json.Marshal(tasks)
-	errHandler(err)
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(tasksJSON)
+	writeJSON(w, tasks)
 }
 
 func (h *Handler) RemoveTask(w http.ResponseWriter, r *http.Request) {
-	uuid, err := ioutil.ReadAll(r.Body)
-	errHandler(err)
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
 
-	err = h.DB.RemoveTask(string(uuid))
-	errHandler(err)
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "failed to read request body", http.StatusBadRequest)
+		return
+	}
 
-	tasks, err := h.DB.GetTasks()
-	errHandler(err)
+	uuid := strings.TrimSpace(string(body))
+	if uuid == "" {
+		http.Error(w, "task uuid is required", http.StatusBadRequest)
+		return
+	}
 
-	tasksJSON, err := json.Marshal(tasks)
-	errHandler(err)
+	if err = h.DB.RemoveTask(uuid); err != nil {
+		log.Printf("Error removing task: %v", err)
+		http.Error(w, "failed to remove task", http.StatusInternalServerError)
+		return
+	}
 
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(tasksJSON)
+	writeTasks(w, h.DB)
 }
 
 func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
-	uuid, err := ioutil.ReadAll(r.Body)
-	errHandler(err)
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
 
-	task, err := h.DB.GetTaskByUUID(string(uuid))
-	errHandler(err)
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "failed to read request body", http.StatusBadRequest)
+		return
+	}
 
-	err = h.DB.RemoveTask(string(uuid))
-	errHandler(err)
+	uuid := strings.TrimSpace(string(body))
+	if uuid == "" {
+		http.Error(w, "task uuid is required", http.StatusBadRequest)
+		return
+	}
 
-	task.TimeCompleted = time.Now()
-
-	err = h.DB.AddCompletedTask(task)
-	errHandler(err)
+	task, err := h.DB.CompleteTask(uuid, time.Now())
+	if err != nil {
+		http.Error(w, "task not found", http.StatusNotFound)
+		return
+	}
 
 	// Update gamification data
 	gamification, err := h.DB.GetGamification()
@@ -186,21 +373,21 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Error getting gamification data: %v", err)
 		// Continue with the rest of the handler even if gamification fails
 		gamification = &database.Gamification{
-			Level: 1,
-			TotalPoints: 0,
+			Level:          1,
+			TotalPoints:    0,
 			CompletedTasks: 0,
 		}
 	}
 
 	// Calculate points based on task complexity
-	points := 10 // Base points
+	points := 10                                       // Base points
 	if task.DurationExecutionEstimatedSeconds > 3600 { // More than 1 hour
 		points = 25
 	}
 	if task.DurationExecutionEstimatedSeconds > 7200 { // More than 2 hours
 		points = 50
 	}
-	
+
 	// Bonus points for completing on time
 	if task.TimeHardDeadline.Year() != 9999 && task.TimeCompleted.Before(task.TimeHardDeadline) {
 		points += 10
@@ -209,7 +396,7 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 	// Update gamification stats
 	gamification.TotalPoints += points
 	gamification.CompletedTasks++
-	
+
 	// Update first task date if not set
 	if gamification.FirstTaskDate == nil {
 		now := time.Now()
@@ -224,7 +411,7 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 	if gamification.LastCompletionDate != nil {
 		lastDate := gamification.LastCompletionDate.Truncate(24 * time.Hour)
 		daysSince := int(today.Sub(lastDate).Hours() / 24)
-		
+
 		if daysSince == 0 {
 			// Same day, streak continues
 		} else if daysSince == 1 {
@@ -248,6 +435,33 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	gamification.LastCompletionDate = &now
 
+	if gamification.CompletedTasks == 1 {
+		addAchievement(gamification, "firstTask")
+	}
+	if gamification.CurrentStreak >= 3 {
+		addAchievement(gamification, "streak3")
+	}
+	if gamification.CurrentStreak >= 7 {
+		addAchievement(gamification, "streak7")
+	}
+	if gamification.CurrentStreak >= 30 {
+		addAchievement(gamification, "streak30")
+	}
+	if gamification.TotalPoints >= 1000 {
+		addAchievement(gamification, "points1000")
+	}
+	if gamification.TotalPoints >= 5000 {
+		addAchievement(gamification, "points5000")
+	}
+	if task.TimeHardDeadline.Year() != 9999 && task.TimeCompleted.Before(task.TimeHardDeadline) {
+		addAchievement(gamification, "earlyBird")
+	}
+	if completedToday, err := completedTasksOnDate(h.DB, now); err != nil {
+		log.Printf("Error checking today's achievements: %v", err)
+	} else if completedToday >= 5 {
+		addAchievement(gamification, "speedDemon")
+	}
+
 	// Save gamification data
 	err = h.DB.UpdateGamification(gamification)
 	if err != nil {
@@ -261,7 +475,7 @@ func (h *Handler) CompleteTask(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Error getting home directory: %v", err)
 		homeDir = "."
 	}
-	
+
 	reportDir := filepath.Join(homeDir, "tasksReport")
 	err = os.MkdirAll(reportDir, 0755)
 	if err != nil {
@@ -352,7 +566,7 @@ h1 {
 </head>
 <body>
 <div class="container">
-<h1>📋 Task Report - ` + year + `-` + month + `-` + day + `</h1>
+<h1>Task Report - ` + year + `-` + month + `-` + day + `</h1>
 `
 			io.WriteString(f, header)
 		}
@@ -361,7 +575,7 @@ h1 {
 		hours := task.DurationExecutionRealSeconds / 3600
 		minutes := (task.DurationExecutionRealSeconds % 3600) / 60
 		seconds := task.DurationExecutionRealSeconds % 60
-		
+
 		durationStr := ""
 		if hours > 0 {
 			durationStr = fmt.Sprintf("%dh %dm %ds", hours, minutes, seconds)
@@ -372,132 +586,165 @@ h1 {
 		}
 
 		// Clean task body to remove any encoding artifacts
-		cleanBody := utils.CleanTaskText(task.Body)
-		
+		cleanBody := html.EscapeString(utils.CleanTaskText(task.Body))
+
 		taskHTML := fmt.Sprintf(`<div class="task-item">
-    <div class="task-time">✅ Completed at %s</div>
+    <div class="task-time">Completed at %s</div>
     <div class="task-body">%s</div>
-    <div class="task-duration">⏱️ Time spent: %s</div>
+    <div class="task-duration">Time spent: %s</div>
 </div>
 `, task.TimeCompleted.Format("15:04:05"), cleanBody, durationStr)
 
 		io.WriteString(f, taskHTML)
 	}
 
-	tasks, err := h.DB.GetTasks()
-	errHandler(err)
-
-	tasksJSON, err := json.Marshal(tasks)
-	errHandler(err)
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(tasksJSON)
+	writeTasks(w, h.DB)
 }
 
 func (h *Handler) RearrangeTasks(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-	errHandler(err)
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
 
-	strBody := string(body)
-	sourceTaskUUID := ""
-	destinationTaskPosition := 0
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "failed to read request body", http.StatusBadRequest)
+		return
+	}
 
-	for i := 0; i < len(strBody); i++ {
-		if strBody[i] != ',' {
-			sourceTaskUUID += string(strBody[i])
-		} else {
-			destinationTaskPosition = i + 1
+	var request rearrangeTasksRequest
+	raw := strings.TrimSpace(string(body))
+	if strings.HasPrefix(raw, "{") {
+		if err := json.Unmarshal(body, &request); err != nil {
+			http.Error(w, "invalid rearrange request", http.StatusBadRequest)
+			return
+		}
+	} else {
+		parts := strings.SplitN(raw, ",", 2)
+		if len(parts) != 2 {
+			http.Error(w, "expected source and destination uuid", http.StatusBadRequest)
+			return
+		}
+		request.SourceUUID = strings.TrimSpace(parts[0])
+		request.DestinationUUID = strings.TrimSpace(parts[1])
+		request.InsertBefore = false
+	}
+
+	if request.SourceUUID == "" || request.DestinationUUID == "" {
+		http.Error(w, "source and destination uuid are required", http.StatusBadRequest)
+		return
+	}
+	if request.SourceUUID == request.DestinationUUID {
+		writeTasks(w, h.DB)
+		return
+	}
+
+	tasks, err := h.DB.GetTasks()
+	if err != nil {
+		log.Printf("Error getting tasks: %v", err)
+		http.Error(w, "failed to get tasks", http.StatusInternalServerError)
+		return
+	}
+
+	var source *database.Task
+	remaining := make([]database.Task, 0, len(tasks))
+	for i := range tasks {
+		task := tasks[i]
+		if task.UUID == request.SourceUUID {
+			source = &task
+			continue
+		}
+		remaining = append(remaining, task)
+	}
+	if source == nil {
+		http.Error(w, "source task not found", http.StatusNotFound)
+		return
+	}
+
+	destinationIndex := -1
+	for i := range remaining {
+		if remaining[i].UUID == request.DestinationUUID {
+			destinationIndex = i
 			break
 		}
 	}
+	if destinationIndex == -1 {
+		http.Error(w, "destination task not found", http.StatusNotFound)
+		return
+	}
 
-	destinationTaskUUID := strBody[destinationTaskPosition:]
+	insertIndex := destinationIndex
+	if !request.InsertBefore {
+		insertIndex = destinationIndex + 1
+	}
 
-	sourceTask, err := h.DB.GetTaskByUUID(sourceTaskUUID)
-	errHandler(err)
-
-	destinationTask, err := h.DB.GetTaskByUUID(destinationTaskUUID)
-	errHandler(err)
-
-	tasks, err := h.DB.GetTasks()
-	errHandler(err)
-
-	sourceOrder := sourceTask.Order
-	destinationOrder := destinationTask.Order
-	
-	log.Printf("RearrangeTasks: Moving task %s (order %d) to position of task %s (order %d)\n", 
-		sourceTaskUUID, sourceOrder, destinationTaskUUID, destinationOrder)
-
-	if sourceTaskUUID != destinationTaskUUID {
-		// Moving down in the list (to a higher order number)
-		if sourceOrder < destinationOrder {
-			for i := 0; i < len(tasks); i++ {
-				if tasks[i].UUID == sourceTaskUUID {
-					tasks[i].Order = destinationOrder
-				} else if tasks[i].Order > sourceOrder && tasks[i].Order <= destinationOrder {
-					tasks[i].Order--
-				}
-			}
-		} else if sourceOrder > destinationOrder {
-			// Moving up in the list (to a lower order number)
-			for i := 0; i < len(tasks); i++ {
-				if tasks[i].UUID == sourceTaskUUID {
-					tasks[i].Order = destinationOrder
-				} else if tasks[i].Order >= destinationOrder && tasks[i].Order < sourceOrder {
-					tasks[i].Order++
-				}
-			}
+	reordered := append(remaining[:insertIndex], append([]database.Task{*source}, remaining[insertIndex:]...)...)
+	for i := range reordered {
+		reordered[i].Order = i
+		if err = h.DB.UpdateTask(&reordered[i]); err != nil {
+			log.Printf("Error updating task order: %v", err)
+			http.Error(w, "failed to update task order", http.StatusInternalServerError)
+			return
 		}
-		
-		// Log the new order
-		log.Printf("RearrangeTasks: New order assigned - task %s now has order %d\n", 
-			sourceTaskUUID, destinationOrder)
 	}
 
-	for i := 0; i < len(tasks); i++ {
-		err = h.DB.UpdateTask(&tasks[i])
-		errHandler(err)
-	}
-
-	tasks, err = h.DB.GetTasks()
-	errHandler(err)
-	
-	// Log final task order
-	log.Println("RearrangeTasks: Final task order:")
-	for _, task := range tasks {
-		log.Printf("  - %s: order %d\n", task.UUID, task.Order)
-	}
-
-	tasksJSON, err := json.Marshal(tasks)
-	errHandler(err)
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(tasksJSON)
+	writeTasks(w, h.DB)
 }
 
 func (h *Handler) UpdateTaskExecutionRealSeconds(w http.ResponseWriter, r *http.Request) {
-	updateTaskJSON, err := ioutil.ReadAll(r.Body)
-	errHandler(err)
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
+
+	updateTaskJSON, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "failed to read request body", http.StatusBadRequest)
+		return
+	}
 
 	updateTaskJSONString := string(updateTaskJSON)
 	updateTaskSplitted := strings.Split(updateTaskJSONString, "$;")
+	if len(updateTaskSplitted) != 2 {
+		http.Error(w, "expected uuid and seconds", http.StatusBadRequest)
+		return
+	}
 
-	uuid := updateTaskSplitted[0]
+	uuid := strings.TrimSpace(updateTaskSplitted[0])
 	seconds, err := strconv.Atoi(updateTaskSplitted[1])
-	errHandler(err)
+	if err != nil || seconds < 0 {
+		http.Error(w, "invalid seconds", http.StatusBadRequest)
+		return
+	}
 
 	task, err := h.DB.GetTaskByUUID(uuid)
-	errHandler(err)
+	if err != nil {
+		http.Error(w, "task not found", http.StatusNotFound)
+		return
+	}
 
 	task.DurationExecutionRealSeconds = seconds
 
 	err = h.DB.UpdateTask(task)
-	errHandler(err)
+	if err != nil {
+		log.Printf("Error updating task timer: %v", err)
+		http.Error(w, "failed to update task timer", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func (h *Handler) GetTodayResults(w http.ResponseWriter, r *http.Request) {
+	if !requireMethod(w, r, http.MethodGet) {
+		return
+	}
+
 	tasksCompleted, err := h.DB.GetCompletedTasks()
-	errHandler(err)
+	if err != nil {
+		log.Printf("Error getting completed tasks: %v", err)
+		http.Error(w, "failed to get completed tasks", http.StatusInternalServerError)
+		return
+	}
 
 	var tasksCompletedToday []database.Task
 
@@ -510,13 +757,11 @@ func (h *Handler) GetTodayResults(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	saveReport(tasksCompletedToday)
+	sort.Slice(tasksCompletedToday, func(i, j int) bool {
+		return tasksCompletedToday[i].TimeCompleted.Before(tasksCompletedToday[j].TimeCompleted)
+	})
 
-	tasksJSON, err := json.Marshal(tasksCompletedToday)
-	errHandler(err)
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(tasksJSON)
+	writeJSON(w, tasksCompletedToday)
 }
 
 func saveReport(completedTasks []database.Task) {
@@ -526,7 +771,7 @@ func saveReport(completedTasks []database.Task) {
 		log.Printf("Error getting home directory: %v", err)
 		homeDir = "."
 	}
-	
+
 	reportDir := filepath.Join(homeDir, "tasksReport")
 	err = os.MkdirAll(reportDir, 0755)
 	if err != nil {
@@ -667,7 +912,7 @@ h1 {
 </head>
 <body>
 <div class="container">
-<h1>📊 Daily Task Summary</h1>
+<h1>Daily Task Summary</h1>
 <div class="summary">
 <h2>` + t.Format("Monday, January 2, 2006") + `</h2>
 <div class="stat-grid">
@@ -680,8 +925,8 @@ h1 {
         <div class="stat-label">Total Time</div>
     </div>
     <div class="stat-box">
-        <div class="stat-value">🔥</div>
-        <div class="stat-label">Great Work!</div>
+        <div class="stat-value">OK</div>
+        <div class="stat-label">Daily Summary</div>
     </div>
 </div>
 </div>
@@ -695,7 +940,7 @@ h1 {
 		hours := task.DurationExecutionRealSeconds / 3600
 		minutes := (task.DurationExecutionRealSeconds % 3600) / 60
 		seconds := task.DurationExecutionRealSeconds % 60
-		
+
 		durationStr := ""
 		if hours > 0 {
 			durationStr = fmt.Sprintf("%dh %dm %ds", hours, minutes, seconds)
@@ -706,12 +951,12 @@ h1 {
 		}
 
 		// Clean task body to remove any encoding artifacts
-		cleanBody := utils.CleanTaskText(task.Body)
-		
+		cleanBody := html.EscapeString(utils.CleanTaskText(task.Body))
+
 		taskHTML := fmt.Sprintf(`<div class="task-item">
-    <div class="task-time">✅ Completed at %s</div>
+    <div class="task-time">Completed at %s</div>
     <div class="task-body">%s</div>
-    <div class="task-duration">⏱️ Time spent: %s</div>
+    <div class="task-duration">Time spent: %s</div>
 </div>
 `, task.TimeCompleted.Format("15:04:05"), cleanBody, durationStr)
 		io.WriteString(f, taskHTML)
@@ -729,6 +974,10 @@ h1 {
 }
 
 func (h *Handler) GetGamification(w http.ResponseWriter, r *http.Request) {
+	if !requireMethod(w, r, http.MethodGet) {
+		return
+	}
+
 	gamification, err := h.DB.GetGamification()
 	if err != nil {
 		log.Printf("Error getting gamification: %v", err)
@@ -741,9 +990,13 @@ func (h *Handler) GetGamification(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateGamification(w http.ResponseWriter, r *http.Request) {
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
+
 	var gamification database.Gamification
-	
-	body, err := ioutil.ReadAll(r.Body)
+
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Error reading body: %v", err)
 		http.Error(w, "Failed to read request body", http.StatusBadRequest)
@@ -754,6 +1007,15 @@ func (h *Handler) UpdateGamification(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &gamification)
 	if err != nil {
 		log.Printf("Error unmarshaling gamification: %v", err)
+		http.Error(w, "Invalid gamification data", http.StatusBadRequest)
+		return
+	}
+
+	if gamification.TotalPoints < 0 ||
+		gamification.CurrentStreak < 0 ||
+		gamification.LongestStreak < 0 ||
+		gamification.Level < 1 ||
+		gamification.CompletedTasks < 0 {
 		http.Error(w, "Invalid gamification data", http.StatusBadRequest)
 		return
 	}

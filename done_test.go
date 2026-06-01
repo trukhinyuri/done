@@ -12,12 +12,17 @@ func TestMain(m *testing.M) {
 }
 
 func TestVersionParameterPassed(t *testing.T) {
-	// Skip test if BuildVersion is empty
-	if BuildVersion == "" {
-		t.Skip("BuildVersion is empty, skipping version test")
-	}
+	originalVersion := BuildVersion
+	originalTime := BuildTime
+	defer func() {
+		BuildVersion = originalVersion
+		BuildTime = originalTime
+	}()
 
-	expected := BuildVersion + "\n"
+	BuildVersion = "test-version"
+	BuildTime = "2026-06-01 12:00:00"
+
+	expected := BuildVersion + "\n" + BuildTime + "\n"
 
 	// Save original stdout
 	oldStdout := os.Stdout

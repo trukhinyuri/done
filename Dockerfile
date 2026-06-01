@@ -53,4 +53,4 @@ EXPOSE 3001
 VOLUME ["/data"]
 
 # Run the application with custom db path
-CMD ["./done", "-port", "3001", "-dbpath", "/data/tasks.db"]
+CMD ["./done", "-host", "0.0.0.0", "-port", "3001", "-dbpath", "/data/tasks.db"]

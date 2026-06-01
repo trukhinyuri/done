@@ -1,42 +1,32 @@
-// Ninstyle gamification system - Database backed version
+// Done gamification system - database-backed version
 "use strict";
 
 (function(window) {
     
-    // Points system - based on task complexity and time spent
-    const POINTS = {
-        taskComplete: 100,         // Base points for completing a task
-        onTimeBonus: 50,          // Bonus for completing before deadline
-        streakBonus: 25,          // Bonus per day of streak (max 10 days)
-        timeBonus: 10,            // Bonus per hour spent on task
-        efficiencyBonus: 50,      // Bonus for completing faster than estimated
-        levelUp: 500              // Bonus for leveling up
-    };
-    
     // Level thresholds
     const LEVELS = [
         { level: 1, points: 0, title: "Done" },
-        { level: 2, points: 500, title: "Apprentice" },
-        { level: 3, points: 1500, title: "Journeyman" },
-        { level: 4, points: 3000, title: "Expert" },
-        { level: 5, points: 5000, title: "Master" },
-        { level: 6, points: 8000, title: "Champion" },
-        { level: 7, points: 12000, title: "Hero" },
-        { level: 8, points: 17000, title: "Legend" },
-        { level: 9, points: 25000, title: "Mythic" },
-        { level: 10, points: 50000, title: "Deity" }
+        { level: 2, points: 100, title: "Apprentice" },
+        { level: 3, points: 200, title: "Journeyman" },
+        { level: 4, points: 300, title: "Expert" },
+        { level: 5, points: 400, title: "Master" },
+        { level: 6, points: 500, title: "Champion" },
+        { level: 7, points: 600, title: "Hero" },
+        { level: 8, points: 700, title: "Legend" },
+        { level: 9, points: 800, title: "Mythic" },
+        { level: 10, points: 900, title: "Deity" }
     ];
     
     // Achievements
     const ACHIEVEMENTS = {
-        firstTask: { id: 'firstTask', name: 'First Steps', description: 'Complete your first task', icon: '🎯' },
-        streak3: { id: 'streak3', name: 'On Fire', description: '3 day streak', icon: '🔥' },
-        streak7: { id: 'streak7', name: 'Week Warrior', description: '7 day streak', icon: '⚡' },
-        streak30: { id: 'streak30', name: 'Monthly Master', description: '30 day streak', icon: '🌟' },
-        points1000: { id: 'points1000', name: 'Point Collector', description: 'Earn 1000 points', icon: '💎' },
-        points5000: { id: 'points5000', name: 'Point Master', description: 'Earn 5000 points', icon: '👑' },
-        speedDemon: { id: 'speedDemon', name: 'Speed Demon', description: 'Complete 5 tasks in one day', icon: '⚡' },
-        earlyBird: { id: 'earlyBird', name: 'Early Bird', description: 'Complete a task before deadline', icon: '🌅' }
+        firstTask: { id: 'firstTask', name: 'First Steps', description: 'Complete your first task', icon: 'First' },
+        streak3: { id: 'streak3', name: 'On Fire', description: '3 day streak', icon: '3d' },
+        streak7: { id: 'streak7', name: 'Week Warrior', description: '7 day streak', icon: '7d' },
+        streak30: { id: 'streak30', name: 'Monthly Master', description: '30 day streak', icon: '30d' },
+        points1000: { id: 'points1000', name: 'Point Collector', description: 'Earn 1000 points', icon: '1k' },
+        points5000: { id: 'points5000', name: 'Point Master', description: 'Earn 5000 points', icon: '5k' },
+        speedDemon: { id: 'speedDemon', name: 'Speed Demon', description: 'Complete 5 tasks in one day', icon: '5/day' },
+        earlyBird: { id: 'earlyBird', name: 'Early Bird', description: 'Complete a task before deadline', icon: 'Early' }
     };
     
     // Cached gamification data
@@ -188,11 +178,11 @@
                     <span class="level-title">${currentLevel.title}</span>
                 </div>
                 <div class="points-tasks">
-                    <span class="tasks-icon">⭐</span>
+                    <span class="tasks-icon">Completed</span>
                     <span class="tasks-value">${completedTasks}</span>
                 </div>
                 <div class="points-score">
-                    <span class="points-icon">🏆</span>
+                    <span class="points-icon">Points</span>
                     <span class="points-value">${totalPoints.toLocaleString()}</span>
                 </div>
                 <div class="level-progress">
@@ -202,7 +192,7 @@
                     <div class="progress-text">${progress.pointsNeeded} points to next level${progress.daysToNext !== null && progress.daysToNext > 0 ? ` (~${progress.daysToNext} day${progress.daysToNext !== 1 ? 's' : ''})` : ''}</div>
                 </div>
                 <button class="sound-toggle ${soundEnabled ? 'enabled' : ''}" title="Toggle sound effects">
-                    <span class="sound-icon">${soundEnabled ? '🔊' : '🔇'}</span>
+                    <span class="sound-icon">${soundEnabled ? 'Sound on' : 'Sound off'}</span>
                 </button>
             </div>
         `;
@@ -213,13 +203,16 @@
             soundToggle.addEventListener('click', function() {
                 const enabled = window.NinstyleSounds.toggleSound();
                 this.classList.toggle('enabled', enabled);
-                this.querySelector('.sound-icon').textContent = enabled ? '🔊' : '🔇';
+                this.querySelector('.sound-icon').textContent = enabled ? 'Sound on' : 'Sound off';
             });
         }
     }
     
     // Handle task completion - Points are now calculated on the backend
     async function onTaskComplete() {
+        const previousPoints = cachedData ? (cachedData.total_points || 0) : 0;
+        const previousAchievements = cachedData && Array.isArray(cachedData.achievements) ? cachedData.achievements : [];
+
         // Wait a bit for the backend to update
         setTimeout(async () => {
             // Clear cache to force refresh
@@ -228,33 +221,12 @@
             // Fetch updated data
             const data = await fetchGamificationData();
             
-            // Check achievements based on the new data
-            const achievements = data.achievements || [];
             const totalPoints = data.total_points || 0;
-            const currentStreak = data.current_streak || 0;
-            const newAchievements = [];
-            
-            // Check for new achievements
-            if (data.completed_tasks === 1 && !achievements.includes('firstTask')) {
-                newAchievements.push(ACHIEVEMENTS.firstTask);
-            }
-            
-            if (currentStreak >= 3 && !achievements.includes('streak3')) {
-                newAchievements.push(ACHIEVEMENTS.streak3);
-            }
-            if (currentStreak >= 7 && !achievements.includes('streak7')) {
-                newAchievements.push(ACHIEVEMENTS.streak7);
-            }
-            if (currentStreak >= 30 && !achievements.includes('streak30')) {
-                newAchievements.push(ACHIEVEMENTS.streak30);
-            }
-            
-            if (totalPoints >= 1000 && !achievements.includes('points1000')) {
-                newAchievements.push(ACHIEVEMENTS.points1000);
-            }
-            if (totalPoints >= 5000 && !achievements.includes('points5000')) {
-                newAchievements.push(ACHIEVEMENTS.points5000);
-            }
+            const achievements = Array.isArray(data.achievements) ? data.achievements : [];
+            const newAchievements = achievements
+                .filter(achievementID => !previousAchievements.includes(achievementID))
+                .map(achievementID => ACHIEVEMENTS[achievementID])
+                .filter(Boolean);
             
             // Show new achievements
             newAchievements.forEach(achievement => {
@@ -264,10 +236,10 @@
             // Update display
             updatePointsDisplay();
             
-            // Show points earned animation (calculate approximate points)
-            // The actual calculation is done on the backend
-            const pointsEarned = 10; // Base points - actual calculation is on backend
-            showPointsEarned(pointsEarned);
+            const pointsEarned = totalPoints - previousPoints;
+            if (pointsEarned > 0) {
+                showPointsEarned(pointsEarned);
+            }
         }, 500);
     }
     

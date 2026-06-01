@@ -7,16 +7,42 @@
 // Global namespace for exports
 window.exports = window.exports || (window.exports = {});
 window.exports.timerId = 0; // Currently active timer ID
+window.exports.editingTaskUUID = null;
+
+function setTaskComposerMode(mode) {
+    var composer = document.getElementsByClassName("page_newTask")[0];
+    var buttonLabel = document.querySelector(".page_newTask_send .button-label");
+    var buttonIcon = document.querySelector(".page_newTask_send .button-icon");
+    var isEditing = mode === "edit";
+
+    if (composer) {
+        composer.classList.toggle("is-editing", isEditing);
+    }
+    if (buttonLabel) {
+        buttonLabel.textContent = isEditing ? "Update" : "Schedule";
+    }
+    if (buttonIcon) {
+        buttonIcon.textContent = isEditing ? "✓" : "+";
+    }
+}
+
+window.setTaskComposerMode = setTaskComposerMode;
 
 (function (Done) {
 
     /**
-     * Parse JSON response from backend
-     * TODO: Replace eval with JSON.parse for better security
+     * Parse JSON response from backend.
      */
     function makeObjectFromBackendJSON(json) {
-        let obj = eval(json);
-        return obj;
+        if (!json || json === "null") {
+            return null;
+        }
+        try {
+            return JSON.parse(json);
+        } catch (error) {
+            console.error("Failed to parse backend JSON:", error, json);
+            return null;
+        }
     }
 
     // function makeBackendJSONFromObject(obj) {
@@ -61,7 +87,7 @@ window.exports.timerId = 0; // Currently active timer ID
                         } else if(property.indexOf('time_hard_dead_line') == 0) {
                             var date = new Date(objArray[i][property]);
                             if (date.getFullYear() == 9999) {
-                                objArray[i][property + "_readable"] = "";
+                                objArray[i][property + "_readable"] = "-";
                             } else {
                                 // Month is 0-indexed in JS, so add 1 for display
                                 objArray[i][property + "_readable"] = date.getDate() + " / " + (date.getMonth() + 1) + " / " + date.getFullYear();
@@ -127,6 +153,15 @@ window.exports.timerId = 0; // Currently active timer ID
         return tasksData;
     }
 
+    function appendPlannerMarker(tasksElements, plannedDate) {
+        var plannerContainer = document.createElement("div");
+        plannerContainer.className = "page_tasks_content_taskPlanner";
+        plannerContainer.textContent = "Planned by "
+            + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
+            + "-" + plannedDate.getDate() + " (" + getCorrectDayOfWeek(plannedDate.getDay()) + ")";
+        tasksElements.appendChild(plannerContainer);
+    }
+
     /**
      * Render all tasks in the UI
      * Handles task display, ordering, and planning calculations
@@ -149,11 +184,13 @@ window.exports.timerId = 0; // Currently active timer ID
 
         var tasksElements = document.getElementsByClassName("page_tasks_content")[0];
 
-        console.log(tasksData);
         if (tasksData != null) {
             tasksData.sort(sort_by("order", false, parseInt));
 
 
+            if (window.TaskTimerRegistry) {
+                window.TaskTimerRegistry.stopAll();
+            }
             tasksElements.innerHTML = "";
             for (var i = 0; i < tasksData.length; i++) {
 
@@ -181,12 +218,7 @@ window.exports.timerId = 0; // Currently active timer ID
                 }
 
                 if ((unPlannedSeconds > workDaySeconds) && (i != 0)) {
-                        var plannerContainer = document.createElement("div");
-                        plannerContainer.className = "page_tasks_content_taskPlanner";
-                        plannerContainer.innerHTML += "📅 Will be done by "
-                            + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
-                            + "-" + plannedDate.getDate() + " ( " + getCorrectDayOfWeek(plannedDate.getDay()) + " )";
-                        tasksElements.appendChild(plannerContainer);
+                        appendPlannerMarker(tasksElements, plannedDate);
                 }
 
                 var taskContainer = document.createElement("div");
@@ -208,12 +240,7 @@ window.exports.timerId = 0; // Currently active timer ID
 
                 if ((tasksData.length - 1) == i) {
                     if (unPlannedSeconds <= workDaySeconds) {
-                        var plannerContainer = document.createElement("div");
-                        plannerContainer.className = "page_tasks_content_taskPlanner";
-                        plannerContainer.innerHTML += "📅 Will be done by "
-                            + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
-                            + "-" + plannedDate.getDate() + " ( " + getCorrectDayOfWeek(plannedDate.getDay()) + " )";
-                        tasksElements.appendChild(plannerContainer);
+                        appendPlannerMarker(tasksElements, plannedDate);
                     } else {
                         plannedDate.setDate(plannedDate.getDate() + 1);
                         if (plannedDate.getDay() == 0) {
@@ -222,18 +249,16 @@ window.exports.timerId = 0; // Currently active timer ID
                             plannedDate.setDate(plannedDate.getDate() + 2);
                         }
 
-                        var plannerContainer = document.createElement("div");
-                        plannerContainer.className = "page_tasks_content_taskPlanner";
-                        plannerContainer.innerHTML += "📅 Will be done by "
-                            + plannedDate.getFullYear() + "-" + getCorrectMonthNumber(plannedDate.getMonth())
-                            + "-" + plannedDate.getDate() + " ( " + getCorrectDayOfWeek(plannedDate.getDay()) + " )";
-                        tasksElements.appendChild(plannerContainer);
+                        appendPlannerMarker(tasksElements, plannedDate);
                     }
 
                 }
             }
 
         } else {
+            if (window.TaskTimerRegistry) {
+                window.TaskTimerRegistry.stopAll();
+            }
             tasksElements.innerHTML = "";
         }
 
@@ -323,7 +348,7 @@ window.exports.timerId = 0; // Currently active timer ID
                 
                 var taskTime = document.createElement('div');
                 taskTime.className = 'task-time';
-                taskTime.textContent = '⏱️ Time spent: ' + tasksCompletedData[i]["duration_execution_real_seconds_readable"];
+                taskTime.textContent = 'Time spent: ' + tasksCompletedData[i]["duration_execution_real_seconds_readable"];
                 
                 taskDiv.appendChild(taskName);
                 taskDiv.appendChild(taskTime);
@@ -380,8 +405,6 @@ window.exports.timerId = 0; // Currently active timer ID
         var currentYear = currentDate.getFullYear();
         var currentMonth = currentDate.getMonth() + 1; // JS months are 0-indexed
         var currentDay = currentDate.getDate();
-        
-        console.log('Current date:', currentDay, currentMonth, currentYear);
         
         // Get raw values from form fields
         var deadlineMonthRaw = deadlineMonthElement.value.trim();
@@ -443,8 +466,6 @@ window.exports.timerId = 0; // Currently active timer ID
                 deadlineYear = hasYear ? deadlineYearRaw : currentYear.toString();
             }
             
-            console.log('Auto-completed deadline:', deadlineDay, deadlineMonth, deadlineYear);
-            
             // Validate the constructed date
             var testDate = new Date(parseInt(deadlineYear), parseInt(deadlineMonth) - 1, parseInt(deadlineDay));
             var isValidDate = testDate.getFullYear() == parseInt(deadlineYear) &&
@@ -453,44 +474,47 @@ window.exports.timerId = 0; // Currently active timer ID
             
             // If date is invalid, use tomorrow
             if (!isValidDate) {
-                console.log('Date is invalid, adjusting to tomorrow');
                 var tomorrow = new Date(currentDate);
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 deadlineMonth = (tomorrow.getMonth() + 1).toString();
                 deadlineDay = tomorrow.getDate().toString();
                 deadlineYear = tomorrow.getFullYear().toString();
-                console.log('Adjusted to:', deadlineDay, deadlineMonth, deadlineYear);
             }
         }
 
         var newTask = {};
+        newTask.uuid = window.exports.editingTaskUUID || "";
         newTask.body = taskText;
         newTask.estimation = estimationDays * 8 * 60 * 60 + estimationHours * 60 * 60 + estimationMinutes * 60;
         newTask.deadlineMonth = deadlineMonth;
         newTask.deadlineDay = deadlineDay;
         newTask.deadlineYear = deadlineYear;
 
-        estimationMinutesElement.value = "";
-        estimationHoursElement.value = "";
-        estimationDaysElement.value = "";
-        deadlineMonthElement.value = "";
-        deadlineDayElement.value = "";
-        deadlineYearElement.value = "";
-
-
         if ((newTask.body.localeCompare("") != 0) && (Number(estimationDays) <=31) && (Number(estimationHours) <= 23)
         && (Number(estimationMinutes) <= 59) && (Number(deadlineMonth) <=12) && (Number(deadlineDay) <= 31)) {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', "/api/addTask", true);
+            var isEditing = !!window.exports.editingTaskUUID;
+            xhr.open('POST', isEditing ? "/api/updateTask" : "/api/addTask", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(newTask.body + "$;" + newTask.estimation + "$;"
-                + newTask.deadlineMonth + "$;" + newTask.deadlineDay + "$;" + newTask.deadlineYear);
-            taskTextElement.value = "";
-            taskTextElement.focus();
+            xhr.send(JSON.stringify(newTask));
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
-                    Done.renderTasks(xhr.responseText);
-                    if (window.NinstyleSounds) {
+                    if (xhr.status === 200) {
+                        taskTextElement.value = "";
+                        estimationMinutesElement.value = "";
+                        estimationHoursElement.value = "";
+                        estimationDaysElement.value = "";
+                        deadlineMonthElement.value = "";
+                        deadlineDayElement.value = "";
+                        deadlineYearElement.value = "";
+                        window.exports.editingTaskUUID = null;
+                        setTaskComposerMode("create");
+                        taskTextElement.focus();
+                        Done.renderTasks(xhr.responseText);
+                    } else {
+                        alert(xhr.responseText || "Task save failed");
+                    }
+                    if (!isEditing && window.NinstyleSounds) {
                         window.NinstyleSounds.taskCreate();
                     }
                 }
@@ -505,6 +529,10 @@ window.exports.timerId = 0; // Currently active timer ID
      * @param {string} taskUUID - UUID of the task to complete
      */
     function completeTask(taskUUID) {
+        if (window.TaskTimerRegistry) {
+            window.TaskTimerRegistry.stop(taskUUID);
+        }
+        window.exports.timerId = 0;
         var xhr = new XMLHttpRequest();
         xhr.open('POST', "/api/completeTask", true);
         xhr.setRequestHeader('Content-Type', 'text/plain')
@@ -525,6 +553,10 @@ window.exports.timerId = 0; // Currently active timer ID
      * @param {string} taskUUID - UUID of the task to delete
      */
     function removeTask(taskUUID) {
+        if (window.TaskTimerRegistry) {
+            window.TaskTimerRegistry.stop(taskUUID);
+        }
+        window.exports.timerId = 0;
         var xhr = new XMLHttpRequest();
         xhr.open('POST', "/api/removeTask", true);
         xhr.setRequestHeader('Content-Type', 'text/plain')
@@ -543,20 +575,21 @@ window.exports.timerId = 0; // Currently active timer ID
      * Rearrange task order (drag & drop functionality)
      * @param {string} sourceTaskUUID - UUID of task being moved
      * @param {string} destinationTaskUUID - UUID of target position task
-     * TODO: Replace string concatenation with proper JSON
+     * @param {boolean} insertBefore - Whether to insert before the destination
      */
-    function rearrangeTasks(sourceTaskUUID, destinationTaskUUID) {
-        console.log('Rearranging tasks:', sourceTaskUUID, '->', destinationTaskUUID);
-        var rearrangeTasksData = sourceTaskUUID + "," + destinationTaskUUID;
+    function rearrangeTasks(sourceTaskUUID, destinationTaskUUID, insertBefore) {
+        var rearrangeTasksData = JSON.stringify({
+            source_uuid: sourceTaskUUID,
+            destination_uuid: destinationTaskUUID,
+            insert_before: !!insertBefore
+        });
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', "/api/rearrangeTasks", true);
-        xhr.setRequestHeader('Content-Type', 'text/plain')
+        xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(rearrangeTasksData);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
-                console.log('Rearrange response status:', xhr.status);
-                console.log('Rearrange response:', xhr.responseText);
                 if (xhr.status === 200) {
                     Done.renderTasks(xhr.responseText);
                 } else {
@@ -610,7 +643,7 @@ var Done = window.exports.Done;
         // Fetch and display build info
         fetchBuildInfo();
 
-        var addTaskButton = document.getElementsByClassName("taskButton")[0];
+        var addTaskButton = document.querySelector(".page_newTask_send .taskButton");
 
         addTaskButton.addEventListener('click', Done.postTask);
         
@@ -628,8 +661,9 @@ var Done = window.exports.Done;
                 if (e.target === tasksContent && tasksContent.children.length === 0) {
                     e.preventDefault();
                     var sourceTaskUUID = e.dataTransfer.getData("sourceTaskUUID");
-                    // Handle drop on empty list
-                    console.log('Dropped on empty list:', sourceTaskUUID);
+                    if (sourceTaskUUID) {
+                        Done.getTasks();
+                    }
                 }
             });
         }
@@ -677,7 +711,7 @@ var Done = window.exports.Done;
                     // Update footer with build date
                     var footerContent = document.querySelector('.footer_content');
                     if (footerContent) {
-                        footerContent.textContent = 'Done. The task manager. © Yuri Trukhin, 2016–2025. Build ' + buildDate + '. Database: BoltDB.';
+                        footerContent.textContent = 'Done. The task manager. © Yuri Trukhin, 2016–2026. Build ' + buildDate + '. Database: BoltDB.';
                     }
                 } catch (e) {
                     console.error('Failed to parse build info:', e);
@@ -707,19 +741,20 @@ var Done = window.exports.Done;
             const cancelId = 'confirmCancel_' + uniqueId;
             const okId = 'confirmOk_' + uniqueId;
             
-            // Create modal HTML with unique IDs
+            // Create modal HTML with unique IDs. The message is inserted via
+            // textContent below because it can contain task text.
             const modalHtml = `
                 <div class="confirm-modal ${type}" id="${uniqueId}">
                     <div class="confirm-modal-content">
                         <div class="confirm-modal-title">
-                            ${type === 'delete' ? '🗑️ Delete Task' : 
-                              type === 'complete' ? '✅ Complete Task' : '❓ Confirm Action'}
+                            ${type === 'delete' ? 'Delete Task' :
+                              type === 'complete' ? 'Complete Task' : 'Confirm Action'}
                         </div>
-                        <div class="confirm-modal-message">${message}</div>
+                        <div class="confirm-modal-message"></div>
                         <div class="confirm-modal-buttons">
                             <button class="confirm-modal-button cancel" id="${cancelId}">Cancel</button>
                             <button class="confirm-modal-button confirm" id="${okId}">
-                                ${type === 'delete' ? 'Delete' : 
+                                ${type === 'delete' ? 'Delete' :
                                   type === 'complete' ? 'Complete' : 'OK'}
                             </button>
                         </div>
@@ -732,6 +767,10 @@ var Done = window.exports.Done;
             const modal = document.getElementById(uniqueId);
             const cancelButton = document.getElementById(cancelId);
             const okButton = document.getElementById(okId);
+            const messageElement = modal.querySelector('.confirm-modal-message');
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
             
             // Show modal with animation
             setTimeout(() => modal.classList.add('show'), 10);
@@ -753,6 +792,7 @@ var Done = window.exports.Done;
             // Attach event listeners
             okButton.addEventListener('click', () => handleChoice(true));
             cancelButton.addEventListener('click', () => handleChoice(false));
+            okButton.focus();
             
             // Close on backdrop click
             modal.addEventListener('click', (e) => {

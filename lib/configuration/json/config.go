@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 const configFileName = "config.json"
@@ -27,7 +27,7 @@ func InitializeDefaultConfig() {
 }
 
 func SaveConfig(jsonContent []byte) {
-	err := ioutil.WriteFile(configFileName, jsonContent, 0660)
+	err := os.WriteFile(configFileName, jsonContent, 0660)
 	if err != nil {
 		fmt.Println(err)
 	}

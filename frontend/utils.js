@@ -20,7 +20,7 @@
             var utf8 = unescape(encodeURIComponent(text));
             var base64 = btoa(utf8);
             // Make it URL-safe
-            return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            return 'b64:' + base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         } catch (e) {
             console.error('Failed to encode task text:', e);
             // Fallback to simple escaping
@@ -44,7 +44,12 @@
         
         try {
             // Check if it's base64 encoded (doesn't contain spaces or special chars except - and _)
-            if (/^[A-Za-z0-9\-_]+$/.test(encodedText)) {
+            var hasExplicitPrefix = encodedText.indexOf('b64:') === 0;
+            if (hasExplicitPrefix) {
+                encodedText = encodedText.substring(4);
+            }
+
+            if (hasExplicitPrefix || (/^[A-Za-z0-9\-_]+$/.test(encodedText) && /[-_]/.test(encodedText) && encodedText.length > 12)) {
                 // Restore base64 padding
                 var base64 = encodedText.replace(/-/g, '+').replace(/_/g, '/');
                 var pad = base64.length % 4;

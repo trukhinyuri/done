@@ -5,6 +5,7 @@
 
         var taskVisible = currentTemplate.getElementsByClassName("task_visible")[0];
         taskVisible.addEventListener("click", taskVisibleClickHandler);
+        taskVisible.addEventListener("keydown", taskVisibleKeydownHandler);
         currentTemplate.addEventListener('dragover', allowDrop);
         currentTemplate.addEventListener('drop', drop);
         currentTemplate.addEventListener('dragstart', drag);
@@ -16,6 +17,8 @@
         var taskChangeButton = currentTemplate.getElementsByClassName("taskChangeButton")[0];
         var taskStartButton = currentTemplate.getElementsByClassName("taskStartButton")[0];
         var taskStopButton = currentTemplate.getElementsByClassName("taskStopButton")[0];
+        var taskMoveUpButton = currentTemplate.getElementsByClassName("taskMoveUpButton")[0];
+        var taskMoveDownButton = currentTemplate.getElementsByClassName("taskMoveDownButton")[0];
         // Check if buttons exist
         if (!taskCompleteButton || !taskRemoveButton || !taskChangeButton) {
             console.error('Some task buttons not found!');
@@ -36,17 +39,25 @@
         taskChangeButton.onclick = changeTaskHandler;
         taskStartButton.addEventListener("click", startTaskHandler);
         taskStopButton.addEventListener("click", stopTaskHandler);
+        taskMoveUpButton.addEventListener("click", function() { moveTask(-1); });
+        taskMoveDownButton.addEventListener("click", function() { moveTask(1); });
+
+        function setActiveState(isActive) {
+            var taskVisibleContent = currentTemplate.getElementsByClassName("task_visible_content")[0];
+            currentTemplate.classList.toggle("task--active", isActive);
+            taskVisibleContent.classList.toggle("task_visible_content_active", isActive);
+            taskStartButton.setAttribute("aria-pressed", isActive ? "true" : "false");
+        }
         
         function startTaskHandler() {
-            var taskVisibleContent = currentTemplate.getElementsByClassName("task_visible_content")[0];
-            // if (window.exports.timerId == 0) {
-            //     window.exports.timerId = setInterval(tick, 1000);
-            //     taskVisibleContent.classList.add("task_visible_content_active");
-            // }
-             if (window.exports.timerId == 0) {
+            if (window.exports.timerId && window.exports.timerId !== currentTemplate.dataset.uuid && window.TaskTimerRegistry) {
+                window.TaskTimerRegistry.stop(window.exports.timerId);
+            }
+
+             if (window.exports.timerId == 0 || window.exports.timerId === currentTemplate.dataset.uuid) {
                  window.exports.timerId = currentTemplate.dataset.uuid;
                  startTimer();
-                 taskVisibleContent.classList.add("task_visible_content_active");
+                 setActiveState(true);
                  if (window.NinstyleSounds) {
                      window.NinstyleSounds.taskStart();
                  }
@@ -56,17 +67,42 @@
         function stopTaskHandler() {
             stopTimer();
             window.exports.timerId = 0;
-            var taskVisibleContent = currentTemplate.getElementsByClassName("task_visible_content")[0];
-            taskVisibleContent.classList.remove("task_visible_content_active");
+            setActiveState(false);
         }
 
         var w = null;
+
+        window.TaskTimerRegistry = window.TaskTimerRegistry || {
+            stops: {},
+            register: function(uuid, stopFn) {
+                this.stops[uuid] = stopFn;
+            },
+            unregister: function(uuid) {
+                delete this.stops[uuid];
+            },
+            stop: function(uuid) {
+                if (this.stops[uuid]) {
+                    this.stops[uuid]();
+                }
+                if (window.exports.timerId === uuid) {
+                    window.exports.timerId = 0;
+                }
+            },
+            stopAll: function() {
+                var stops = this.stops;
+                Object.keys(stops).forEach(function(uuid) {
+                    stops[uuid]();
+                });
+                window.exports.timerId = 0;
+            }
+        };
 
         function startTimer()
         {
 
             if (w==null){
                 w = new Worker("timer.js");
+                window.TaskTimerRegistry.register(currentTemplate.dataset.uuid, stopTimer);
             }
             // Update timer div with output from Web Worker
             w.onmessage = function (e) {
@@ -77,8 +113,14 @@
 
         function stopTimer()
         {
+            if (w == null) {
+                setActiveState(false);
+                return;
+            }
             w.terminate();
             w = null;
+            window.TaskTimerRegistry.unregister(currentTemplate.dataset.uuid);
+            setActiveState(false);
         }
 
         function tick() {
@@ -98,24 +140,25 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     var duration_seconds = currentTemplate.dataset.duration_execution_real_seconds;
-                    var duration_days = Math.floor(duration_seconds / (60 * 60 * 24));
-                    duration_seconds -= duration_days * 60 * 60 * 24;
+                    var duration_days = Math.floor(duration_seconds / (60 * 60 * 8));
+                    duration_seconds -= duration_days * 60 * 60 * 8;
                     var duration_hours = Math.floor(duration_seconds / (60*60));
                     duration_seconds -= duration_hours * 60 * 60;
                     var duration_minutes = Math.floor(duration_seconds / 60);
                     duration_seconds -= duration_minutes * 60;
-                    task_visible_timeExcecutionReal.innerHTML = "[Spend: "
+                    task_visible_timeExcecutionReal.textContent = "Actual "
                         + duration_days + " d., "
                         + duration_hours + " : "
                         + duration_minutes + " : "
-                        + duration_seconds + " ]";
+                        + duration_seconds;
                 }
             }
         }
 
-        function changeTaskHandler() {
-            var task_visible_content = currentTemplate.getElementsByClassName("task_visible_content")[0];
-            var taskText = document.getElementsByClassName("taskText")[0];
+	        function changeTaskHandler() {
+	            window.exports.editingTaskUUID = currentTemplate.dataset.uuid;
+	            var task_visible_content = currentTemplate.getElementsByClassName("task_visible_content")[0];
+	            var taskText = document.getElementsByClassName("taskText")[0];
             var estimationDaysElement = document.getElementsByClassName("page_newTask_estimationDays_value")[0];
             var estimationHoursElement = document.getElementsByClassName("page_newTask_estimationHours_value")[0];
             var estimationMinutesElement = document.getElementsByClassName("page_newTask_estimationMinutes_value")[0];
@@ -126,10 +169,10 @@
             // Get text content preserving line breaks
             var taskContent = task_visible_content.innerText || task_visible_content.textContent;
             taskText.value = taskContent;
-            var duration_seconds = currentTemplate.dataset.duration_execution_estimated_seconds;
-            var duration_days = Math.floor(duration_seconds / (60 * 60 * 24));
-            duration_seconds -= duration_days * 60 * 60 * 24;
-            var duration_hours = Math.floor(duration_seconds / (60*60));
+	            var duration_seconds = parseInt(currentTemplate.dataset.duration_execution_estimated_seconds, 10);
+	            var duration_days = Math.floor(duration_seconds / (60 * 60 * 8));
+	            duration_seconds -= duration_days * 60 * 60 * 8;
+	            var duration_hours = Math.floor(duration_seconds / (60*60));
             duration_seconds -= duration_hours * 60 * 60;
             var duration_minutes = Math.floor(duration_seconds / 60);
 
@@ -151,6 +194,11 @@
                 deadlineYearElement.value = "";
             }
 
+            if (window.setTaskComposerMode) {
+                window.setTaskComposerMode('edit');
+            }
+            taskText.focus();
+            taskText.scrollIntoView({behavior: 'smooth', block: 'center'});
 
 
         }
@@ -167,9 +215,12 @@
 
             // Use custom confirmation modal
             if (window.customConfirm) {
-                window.customConfirm('Do you really want to DELETE the task: ' + taskBody + '?', 'delete')
+                window.customConfirm('Delete this task? ' + taskBody, 'delete')
                     .then(function(confirmed) {
                         if (confirmed) {
+                            if (window.TaskTimerRegistry) {
+                                window.TaskTimerRegistry.stop(taskUUID);
+                            }
                             Done.removeTask(taskUUID);
                         }
                         removeTaskHandler.inProgress = false;
@@ -179,7 +230,10 @@
                     });
             } else {
                 // Fallback to native confirm if customConfirm not available
-                if (confirm('Do you really want to DELETE the task: ' + taskBody + '?')) {
+                if (confirm('Delete this task? ' + taskBody)) {
+                    if (window.TaskTimerRegistry) {
+                        window.TaskTimerRegistry.stop(taskUUID);
+                    }
                     Done.removeTask(taskUUID);
                 }
                 removeTaskHandler.inProgress = false;
@@ -198,9 +252,12 @@
 
             // Use custom confirmation modal
             if (window.customConfirm) {
-                window.customConfirm('Do you really want to report on the completion of the task: ' + taskBody + '?', 'complete')
+                window.customConfirm('Mark this task as done? ' + taskBody, 'complete')
                     .then(function(confirmed) {
                         if (confirmed) {
+                            if (window.TaskTimerRegistry) {
+                                window.TaskTimerRegistry.stop(taskUUID);
+                            }
                             Done.completeTask(taskUUID);
                         }
                         completeTaskHandler.inProgress = false;
@@ -210,7 +267,10 @@
                     });
             } else {
                 // Fallback to native confirm if customConfirm not available
-                if (confirm('Do you really want to report on the completion of the task: ' + taskBody + '?')) {
+                if (confirm('Mark this task as done? ' + taskBody)) {
+                    if (window.TaskTimerRegistry) {
+                        window.TaskTimerRegistry.stop(taskUUID);
+                    }
                     Done.completeTask(taskUUID);
                 }
                 completeTaskHandler.inProgress = false;
@@ -233,6 +293,29 @@
             }
 
             taskControl.className = classList.join(" ");
+            taskVisible.setAttribute("aria-expanded", find ? "true" : "false");
+            currentTemplate.classList.toggle("task--expanded", find);
+        }
+
+        function taskVisibleKeydownHandler(e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                taskVisibleClickHandler();
+            }
+        }
+
+        function moveTask(direction) {
+            var tasks = Array.prototype.slice.call(document.querySelectorAll(".page_tasks_content .task"));
+            var currentIndex = tasks.indexOf(currentTemplate);
+            if (currentIndex === -1) {
+                return;
+            }
+
+            if (direction < 0 && currentIndex > 0) {
+                Done.rearrangeTasks(currentTemplate.dataset.uuid, tasks[currentIndex - 1].dataset.uuid, true);
+            } else if (direction > 0 && currentIndex < tasks.length - 1) {
+                Done.rearrangeTasks(currentTemplate.dataset.uuid, tasks[currentIndex + 1].dataset.uuid, false);
+            }
         }
 
         function copyToBuffer(e) {
@@ -298,7 +381,6 @@
                 window.NinstyleSounds.dragStart();
             }
             
-            console.log('Dragging task:', sourceTaskUUID);
         }
 
         function drop(e) {
@@ -309,16 +391,8 @@
             // Check if we should insert before or after
             var insertBefore = currentTemplate.classList.contains('drag-over-top');
 
-            console.log('Drop event:', {
-                source: sourceTaskUUID,
-                destination: destinationTaskUUID,
-                insertBefore: insertBefore,
-                isSame: sourceTaskUUID === destinationTaskUUID
-            });
-
             if ((destinationTaskUUID != undefined) && (destinationTaskUUID != sourceTaskUUID)) {
-                // TODO: Pass insertBefore flag to rearrangeTasks
-                Done.rearrangeTasks(sourceTaskUUID, destinationTaskUUID);
+                Done.rearrangeTasks(sourceTaskUUID, destinationTaskUUID, insertBefore);
                 if (window.NinstyleSounds) {
                     window.NinstyleSounds.drop();
                 }

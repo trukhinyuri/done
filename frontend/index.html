@@ -1,87 +1,86 @@
 <!DOCTYPE html>
-
 <html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Done></title>
+		<title>Done</title>
         <link rel="icon" href="favicon.ico" />
-        <link rel="stylesheet" href="index.css"/>
-        <script src="bower_components/modules.js/modules.js"></script>
-        <script src="utils.js"></script>
-        <script src="sounds.js"></script>
-        <script src="gamification.js"></script>
-        <script src="index.js"></script>
+        <link rel="stylesheet" href="index.css?v=20260601"/>
+        <script src="bower_components/modules.js/modules.js?v=20260601"></script>
+        <script src="utils.js?v=20260601"></script>
+        <script src="sounds.js?v=20260601"></script>
+        <script src="gamification.js?v=20260601"></script>
+        <script src="index.js?v=20260601"></script>
 	</head>
 	<body>
         <div class="page">
-            <div class="page_newTask">
-                <div class="page_newTask_send">
-                    <button type="submit" class="taskButton usualButton">Schedule</button>
-                </div>
+            <div class="page_newTask" aria-label="Task composer">
                 <div class="page_newTask_input">
-                    <textarea class="form-control taskText page_input_text" rows="3"></textarea>
+                    <label class="field-label" for="taskText">Task</label>
+                    <textarea id="taskText" class="form-control taskText page_input_text" rows="3" placeholder="Capture the next concrete step"></textarea>
                 </div>
-                <div class="page_newTask_text">
-                    in
+                <div class="page_newTask_estimationGroup" aria-label="Estimated effort">
+                    <div class="field-label">Estimate</div>
+                    <div class="duration-controls">
+                        <label class="duration-field">
+                            <span>Min</span>
+                            <input type="text" inputmode="numeric" placeholder="0" class="page_newTask_estimationMinutes_value form-control page_input_text"/>
+                        </label>
+                        <label class="duration-field">
+                            <span>Hours</span>
+                            <input type="text" inputmode="numeric" placeholder="0" class="page_newTask_estimationHours_value form-control page_input_text"/>
+                        </label>
+                        <label class="duration-field">
+                            <span>Days</span>
+                            <input type="text" inputmode="numeric" placeholder="0" class="page_newTask_estimationDays_value form-control page_input_text"/>
+                        </label>
+                    </div>
                 </div>
-                <div class="page_newTask_numberBlock page_newTask_estimationMinutes">
-                    <input type="text" placeholder="0" class="page_newTask_estimationMinutes_value form-control page_input_text"/>
-                </div>
-                <div class="page_newTask_text">
-                    minutes,
-                </div>
-                <div class="page_newTask_numberBlock page_newTask_estimationHours">
-                    <input type="text" placeholder="0" class="page_newTask_estimationHours_value form-control page_input_text"/>
-                </div>
-                <div class="page_newTask_text">
-                    hours,
-                </div>
-                <div class="page_newTask_numberBlock page_newTask_estimationDays">
-                    <input type="text" placeholder="0" class="page_newTask_estimationDays_value form-control page_input_text"/>
-                </div>
-                <div class="page_newTask_text">
-                    days.
-                </div>
-                <div class="page_newTask_deadline">
+                <div class="page_newTask_deadline" aria-label="Deadline">
                     <div class="page_newTask_deadline_label">
-                        <span class="page_newTask_deadline_icon">⚠️</span>
-                        DEADLINE
+                        <span class="page_newTask_deadline_icon" aria-hidden="true">!</span>
+                        Deadline
                     </div>
                     <div class="page_newTask_deadline_inputs">
-                        <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineDay">
-                            <input type="text" placeholder="DD" class="page_newTask_timeHardDeadlineDay_value form-control page_input_text"/>
-                        </div>
-                        <div class="page_newTask_deadline_separator">/</div>
-                        <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineMonth">
-                            <input type="text" placeholder="MM" class="page_newTask_timeHardDeadlineMonth_value form-control page_input_text"/>
-                        </div>
-                        <div class="page_newTask_deadline_separator">/</div>
-                        <div class="page_newTask_numberBlock page_newTask_timeHardDeadlineYear">
-                            <input type="text" placeholder="YYYY" class="page_newTask_timeHardDeadlineYear_value form-control page_input_text"/>
-                        </div>
+                        <label class="date-field">
+                            <span>Day</span>
+                            <input type="text" inputmode="numeric" placeholder="DD" class="page_newTask_timeHardDeadlineDay_value form-control page_input_text"/>
+                        </label>
+                        <label class="date-field">
+                            <span>Month</span>
+                            <input type="text" inputmode="numeric" placeholder="MM" class="page_newTask_timeHardDeadlineMonth_value form-control page_input_text"/>
+                        </label>
+                        <label class="date-field date-field-year">
+                            <span>Year</span>
+                            <input type="text" inputmode="numeric" placeholder="YYYY" class="page_newTask_timeHardDeadlineYear_value form-control page_input_text"/>
+                        </label>
                     </div>
                 </div>
-
+                <div class="page_newTask_send">
+                    <button type="submit" class="taskButton usualButton">
+                        <span class="button-icon" aria-hidden="true">+</span>
+                        <span class="button-label">Schedule</span>
+                    </button>
+                </div>
             </div>
-            <div class="page_today">
+            <div class="page_today" aria-labelledby="doneTodayHeading">
                 <div class="page_today_header">
-                    <label class="todayLabel">Done today:</label>
+                    <h2 id="doneTodayHeading" class="todayLabel">Done today</h2>
                 </div>
-                <div class="page_today_content">
+                <div class="page_today_content" aria-live="polite">
                 </div>
             </div>
-            <div class="page_tasks">
+            <div class="page_tasks" aria-labelledby="tasksHeading">
                 <div class="page_tasks_header">
-                    <label class="tasksLabel">Tasks:</label>
+                    <h2 id="tasksHeading" class="tasksLabel">Tasks</h2>
                 </div>
-                <div class="page_tasks_content">
+                <div class="page_tasks_content" aria-live="polite">
                 </div>
             </div>
         </div>
         <div class="footer">
             <div class="footer_content">
-                Done. The task manager. © Yuri Trukhin, 2016–2025. Build 2025.01.17. Database: BoltDB.
+                Done. The task manager. © Yuri Trukhin, 2016–2026. Build 2026.06.01. Database: BoltDB.
             </div>
         </div>
 	</body>
